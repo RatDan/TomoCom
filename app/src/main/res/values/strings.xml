@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">TomoComm</string>
+    <string name="app_desc">Aplikacja do poznawania nowych ludzi!</string>
+    <string name="text_username">Nazwa użytkownika:</string>
+    <string name="text_password">Hasło:</string>
+    <string name="text_age">Wiek:</string>
+    <string name="username_desc">Zalecane jest wybranie takiej samej nazwy użytkownika jak w innych aplikacjach.</string>
+    <string name="password_desc">Twoje hasło musi się składać z:\n* Ośmiu znaków\n* Jednej wielkiej litery\n* Jednego znaku specjalnego (!, @, $, %, ^, *, +, #)</string>
+    <string name="username_hint">Twoja nazwa</string>
+    <string name="password_hint">Twoje hasło</string>
+    <string name="age_hint">Twój wiek</string>
+    <string name="image_desc">Back arrow</string>
+    <string name="age_desc">Twój wiek jest potrzebny do odblokowania niektórych funkcji aplikacji.</string>
+    <string name="interests_desc">Wybierz 5 twoich zainteresowań: </string>
+
+    <!--Główny panel-->
+    <string name="panel_panel">Główny panel</string>
+
+    <!--Przyciski-->
+    <string name="button_login">Zaloguj</string>
+    <string name="button_next">Dalej</string>
+    <string name="button_start">Zaczynamy</string>
+    <string name="button_register">Zarejestruj</string>
+    <string name="button_logout">Wyloguj</string>
+    <string name="button_changeInterests">Zmień zainteresowania</string>
+    <string name="button_chats">Czaty</string>
+    <string name="button_findPeople">Szukaj ludzi</string>
+
+    <!--Card-->
+    <string name="card_age">Wiek: </string>
+    <string name="card_interests">Zainteresowania: </string>
+
+    <!--Checkboxy-->
+    <string name="t_games">Gry</string>
+    <string name="t_dancing">Taniec</string>
+    <string name="t_fashion">Moda</string>
+    <string name="t_shows">Seriale</string>
+    <string name="t_travelling">Podróżowanie</string>
+    <string name="t_art">Sztuka</string>
+    <string name="t_sport">Sport</string>
+    <string name="t_animals">Zwierzęta</string>
+    <string name="t_cooking">Gotowanie</string>
+    <string name="t_movies">Filmy</string>
+    <string name="t_anime">Anime</string>
+    <string name="t_music">Muzyka</string>
+    <string name="t_nature">Przyroda</string>
+    <string name="t_programming">Programowanie</string>
+    <string name="t_onlineGames">Gry Online</string>
+    <string name="t_manga">Manga</string>
+    <string name="t_gym">Siłownia</string>
+    <string name="t_writing">Pisarstwo</string>
+    <string name="t_fitness">Fitness</string>
+    <string name="t_outdoors">Spędzanie czasu\n na zewnątrz</string>
+    <string name="t_concerts">Koncerty</string>
+    <string name="t_science">Nauka</string>
+    <string name="t_books">Książki</string>
+    <string name="t_camping">Camping</string>
+    <string name="t_boardGames">Gry planszowe</string>
+    <string name="t_fishing">Wędkarstwo</string>
+    <string name="t_hiking">Turystyka\n piesza</string>
+
+    <!--MISC-->
+    <string name="misc_people">Ludzie z podobnymi zainteresowaniami:</string>
+    <string name="misc_chat_with">Chat z użytkownikiem </string>
+</resources>

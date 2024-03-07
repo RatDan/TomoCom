@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InterestSelectorActivity">
+
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="17dp"
+        android:contentDescription="@string/image_desc"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/chooseinterestsTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="?attr/homeAsUpIndicator" />
+
+    <TextView
+        android:id="@+id/chooseinterestsTV"
+        android:layout_width="389dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:text="@string/interests_desc"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <GridLayout
+        android:id="@+id/gridLayout2"
+        android:layout_width="396dp"
+        android:layout_height="478dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="106dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="43dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:columnOrderPreserved="false"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/nextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <CheckBox
+            android:id="@+id/dancingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_dancing" />
+
+        <CheckBox
+            android:id="@+id/fashionCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_fashion" />
+
+        <CheckBox
+            android:id="@+id/showsCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_shows" />
+
+        <CheckBox
+            android:id="@+id/travellingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_travelling" />
+
+        <CheckBox
+            android:id="@+id/artCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_art" />
+
+        <CheckBox
+            android:id="@+id/gamesCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_games" />
+
+        <CheckBox
+            android:id="@+id/sportCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_sport" />
+
+        <CheckBox
+            android:id="@+id/animalsCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_animals" />
+
+        <CheckBox
+            android:id="@+id/cookingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_cooking" />
+
+        <CheckBox
+            android:id="@+id/moviesCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_movies" />
+
+        <CheckBox
+            android:id="@+id/animeCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_anime" />
+
+        <CheckBox
+            android:id="@+id/mangaCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_manga" />
+
+        <CheckBox
+            android:id="@+id/musicCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_music" />
+
+        <CheckBox
+            android:id="@+id/programmingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_programming" />
+
+        <CheckBox
+            android:id="@+id/natureCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_nature" />
+
+        <CheckBox
+            android:id="@+id/onlineGamesCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_onlineGames" />
+
+        <CheckBox
+            android:id="@+id/gymCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_gym" />
+
+        <CheckBox
+            android:id="@+id/writingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_writing" />
+
+        <CheckBox
+            android:id="@+id/fitnessCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_fitness" />
+
+        <CheckBox
+            android:id="@+id/outdoorsCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_outdoors" />
+
+        <CheckBox
+            android:id="@+id/concertsCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_concerts" />
+
+        <CheckBox
+            android:id="@+id/scienceCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_science" />
+
+        <CheckBox
+            android:id="@+id/booksCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_books" />
+
+        <CheckBox
+            android:id="@+id/campingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_camping" />
+
+        <CheckBox
+            android:id="@+id/boardGamesCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_boardGames" />
+
+        <CheckBox
+            android:id="@+id/fishingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_fishing" />
+
+        <CheckBox
+            android:id="@+id/hikingCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/t_hiking" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="279dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="43dp"
+        android:text="@string/button_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

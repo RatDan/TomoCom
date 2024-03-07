@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282445057889",
+    "project_id": "tomocomm-d397a",
+    "storage_bucket": "tomocomm-d397a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282445057889:android:ec65da5ad7baac7809bf20",
+        "android_client_info": {
+          "package_name": "com.danrat.tomocomm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM8wsR7M5kDEGY1xs7IYsPII1ELcIFtB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
