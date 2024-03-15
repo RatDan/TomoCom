@@ -12,32 +12,35 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/image_desc"
+        app:layout_constraintBottom_toTopOf="@+id/usernameTV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/homeAsUpIndicator" />
 
     <TextView
         android:id="@+id/usernameTV"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="53dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="548dp"
+        android:layout_marginBottom="14dp"
         android:text="@string/misc_chat_with"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/returnButton" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="402dp"
-        android:layout_height="576dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="13dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="94dp">
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameTV">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chatRV"
@@ -45,5 +48,44 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:hint="@string/chat_enter_message"
+            android:inputType="text"
+            android:maxLines="6"
+            tools:ignore="AutoFill"
+            tools:layout_editor_absoluteX="9dp"
+            tools:layout_editor_absoluteY="674dp" />
+
+        <ImageButton
+            android:id="@+id/sendMessageButton"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/sendImage_desc"
+            android:text="@string/chat_send_message"
+            android:textColor="@color/design_default_color_primary"
+            app:srcCompat="@android:drawable/ic_menu_send"
+            tools:layout_editor_absoluteX="298dp"
+            tools:layout_editor_absoluteY="684dp" />
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

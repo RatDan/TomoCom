@@ -5,62 +5,64 @@ import java.util.List;
 import java.util.Set;
 
 public class User {
+    private final int id;
+
     public enum Interest
     {
-        DANCING,
-        FASHION,
-        SHOWS,
-        TRAVELLING,
-        ART,
-        GAMES,
-        SPORT,
-        ANIMALS,
-        COOKING,
-        MOVIES,
-        ANIME,
-        MANGA,
-        MUSIC,
-        NATURE,
-        PROGRAMMING,
-        ONLINEGAMES,
-        GYM,
-        WRITING,
-        FITNESS,
-        OUTDOORS,
-        CONCERTS,
-        SCIENCE,
-        BOOKS,
-        CAMPING,
-        BOARDGAMES,
-        FISHING,
-        HIKING
+        Taniec,
+        Moda,
+        Seriale,
+        Podrozowanie,
+        Sztuka,
+        Gry,
+        Sport,
+        Zwierzeta,
+        Gotowanie,
+        Filmy,
+        Anime,
+        Manga,
+        Music,
+        Przyroda,
+        Programowanie,
+        Gry_Online,
+        Silownia,
+        Pisarstwo,
+        Fitness,
+        Spedzanie_czasu_na_zewnatrz,
+        Koncerty,
+        Nauki_scisle,
+        Ksiażki,
+        Kemping,
+        Gry_planszowe,
+        Wedkarstwo,
+        Turystyka_piesza
     }
 
-    private String username;
-    private int age;
-    private Set<Interest> interests; //Podobno set używa się do Enumów
+    private final String username;
+    private final int age;
+    private final Set<Interest> interests; //Podobno set używa się do Enumów
 
-    public User (String username, int age, Set<Interest> interests)
+    public User (int id, String username, int age, Set<Interest> interests)
     {
+        this.id=id;
         this.username=username;
         this.age=age;
         this.interests=interests;
     }
 
+    public int getId() {return id;}
     public String getUsername() {
         return username;
     }
-
     public int getAge () {
         return age;
     }
-
     public String getInterests() {
-        String temp="";
+        StringBuilder temp= new StringBuilder();
         Iterator<Interest> interestIterator = interests.iterator();
         while (interestIterator.hasNext()) {
-            temp=temp + " " + interestIterator.next();
+            temp.append(" ").append(interestIterator.next());
         }
-        return temp;
+        return temp.toString();
     }
 }

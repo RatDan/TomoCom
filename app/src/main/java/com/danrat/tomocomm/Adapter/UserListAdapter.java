@@ -13,11 +13,11 @@ import com.danrat.tomocomm.R;
 
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
     private final List<User> userList;
 
-    public ListAdapter(List<User> userList) {
+    public UserListAdapter(List<User> userList) {
         this.userList = userList;
     }
 

@@ -12,9 +12,10 @@
     <string name="image_desc">Back arrow</string>
     <string name="age_desc">Twój wiek jest potrzebny do odblokowania niektórych funkcji aplikacji.</string>
     <string name="interests_desc">Wybierz 5 twoich zainteresowań: </string>
+    <string name="sendImage_desc">Send arrow</string>
 
     <!--Główny panel-->
-    <string name="panel_panel">Główny panel</string>
+    <string name="panel_panel">Główny panel \n TomoComm</string>
 
     <!--Przyciski-->
     <string name="button_login">Zaloguj</string>
@@ -58,6 +59,14 @@
     <string name="t_boardGames">Gry planszowe</string>
     <string name="t_fishing">Wędkarstwo</string>
     <string name="t_hiking">Turystyka\n piesza</string>
+
+    <!--NAV-->
+    <string name="nav_open">Otwórz</string>
+    <string name="nav_close">Zamknij</string>
+
+    <!--CHAT-->
+    <string name="chat_enter_message">Wpisz wiadomość</string>
+    <string name="chat_send_message">Wyślij</string>
 
     <!--MISC-->
     <string name="misc_people">Ludzie z podobnymi zainteresowaniami:</string>

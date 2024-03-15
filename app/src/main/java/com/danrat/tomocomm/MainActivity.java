@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MatchedPeopleActivity.class));
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
             }
         });
     }

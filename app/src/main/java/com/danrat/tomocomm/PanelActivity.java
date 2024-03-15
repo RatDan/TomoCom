@@ -23,6 +23,7 @@ public class PanelActivity extends AppCompatActivity {
         });
 
         Button chatsButton = (Button)findViewById(R.id.chatsButton);
+        
 
         Button changeInterestsButton = (Button)findViewById(R.id.changeInterestsButton);
         Intent intentFromPanel = new Intent(PanelActivity.this, InterestSelectorActivity.class);

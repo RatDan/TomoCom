@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Android Studio / IntelliJ IDEA
+*.iws
+/.idea/tasks.xml
+/.idea/vcs.xml
+
