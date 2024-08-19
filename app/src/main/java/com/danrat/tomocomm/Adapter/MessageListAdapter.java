@@ -13,6 +13,8 @@ import com.danrat.tomocomm.Model.Message;
 import com.danrat.tomocomm.Model.User;
 import com.danrat.tomocomm.R;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -78,6 +80,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         }
     }
 
+    public static String formatDate(Date date)
+    {
+        return DateFormat.getDateTimeInstance().format(date);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         private final TextView textViewUsername, textViewMessage, textViewDate;
@@ -94,7 +101,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         {
             textViewUsername.setText(message.getSender().getUsername());
             textViewMessage.setText(message.getMessage());
-            textViewDate.setText(String.valueOf(message.getCreatedAt()));
+            textViewDate.setText(formatDate(message.getCreatedAt()));
         }
     }
 

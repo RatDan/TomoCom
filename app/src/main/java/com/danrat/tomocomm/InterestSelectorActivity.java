@@ -71,9 +71,7 @@ public class InterestSelectorActivity extends AppCompatActivity {
         checkboxy[25]=findViewById(R.id.fishingCB);
         checkboxy[26]=findViewById(R.id.hikingCB);
 
-        for (int i = 0; i < checkboxy.length; i++) {
-            final CheckBox checkbox = checkboxy[i];
-            final int finalI = i;
+        for (final CheckBox checkbox : checkboxy) {
             checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

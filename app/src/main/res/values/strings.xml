@@ -4,6 +4,7 @@
     <string name="text_username">Nazwa użytkownika:</string>
     <string name="text_password">Hasło:</string>
     <string name="text_age">Wiek:</string>
+    <string name="text_description">Opis:</string>
     <string name="username_desc">Zalecane jest wybranie takiej samej nazwy użytkownika jak w innych aplikacjach.</string>
     <string name="password_desc">Twoje hasło musi się składać z:\n* Ośmiu znaków\n* Jednej wielkiej litery\n* Jednego znaku specjalnego (!, @, $, %, ^, *, +, #)</string>
     <string name="username_hint">Twoja nazwa</string>
@@ -11,24 +12,28 @@
     <string name="age_hint">Twój wiek</string>
     <string name="image_desc">Back arrow</string>
     <string name="age_desc">Twój wiek jest potrzebny do odblokowania niektórych funkcji aplikacji.</string>
-    <string name="interests_desc">Wybierz 5 twoich zainteresowań: </string>
+    <string name="interests_desc">Wybierz pięć swoich zainteresowań: </string>
     <string name="sendImage_desc">Send arrow</string>
+    <string name="text_email">Adres Email:</string>
+    <string name="email_hint">Twój adres Email</string>
+    <string name="text_remind_password">Nie pamiętam hasła</string>
 
     <!--Główny panel-->
     <string name="panel_panel">Główny panel \n TomoComm</string>
 
     <!--Przyciski-->
-    <string name="button_login">Zaloguj</string>
+    <string name="button_login">Zaloguj się</string>
     <string name="button_next">Dalej</string>
     <string name="button_start">Zaczynamy</string>
-    <string name="button_register">Zarejestruj</string>
-    <string name="button_logout">Wyloguj</string>
-    <string name="button_changeInterests">Zmień zainteresowania</string>
-    <string name="button_chats">Czaty</string>
-    <string name="button_findPeople">Szukaj ludzi</string>
+    <string name="button_register">Załóż konto</string>
+    <string name="button_signUp">Zarejestruj się</string>
+    <string name="button_addFriend">Dodaj znajomego</string>
+    <string name="button_startChat">Rozpocznij chat</string>
+    <string name="button_deleteFriend">Usuń znajomego</string>
+    <string name="button_skip">Pomiń</string>
 
     <!--Card-->
-    <string name="card_age">Wiek: </string>
+    <string name="card_age">Wiek:  </string>
     <string name="card_interests">Zainteresowania: </string>
 
     <!--Checkboxy-->
@@ -60,15 +65,44 @@
     <string name="t_fishing">Wędkarstwo</string>
     <string name="t_hiking">Turystyka\n piesza</string>
 
-    <!--NAV-->
-    <string name="nav_open">Otwórz</string>
-    <string name="nav_close">Zamknij</string>
+    <!--BOTTOM NAV-->
+    <string name="nav_home">Strona główna</string>
+    <string name="nav_settings">Ustawienia</string>
+    <string name="nav_find">Szukaj ludzi</string>
+    <string name="nav_profile">Profil</string>
+
+    <!--SETTINGS PREFERENCES -->
+    <string name="settings_title_general">Ogólne</string>
+    <string name="settings_title_notifications">Powiadomienia</string>
+    <string name="settings_title_misc">Różne</string>
+    <string name="settings_about">O nas</string>
+    <string name="settings_mode">Tryb ciemny</string>
+    <string name="settings_signature">Twoja sygnatura</string>
+    <string name="settings_reply">Domyślny tryb odpowiedzi</string>
+    <string name="settings_push">Powiadomienia Push</string>
+    <string name="settings_sound">Dźwięki powiadomień</string>
+    <string name="settings_logout">Wyloguj</string>
+
+    <!--PROFILE PREFERENCES -->
+    <string name="profile_username">Nazwa użytkownika</string>
+    <string name="profile_title">Ustawienia użytkownika</string>
+    <string name="profile_delete">Usuń konto</string>
+    <string name="profile_change_interests">Zmień zainteresowania</string>
+    <string name="profile_change_picture">Zmień zdjęcie profilowe</string>
+
 
     <!--CHAT-->
     <string name="chat_enter_message">Wpisz wiadomość</string>
     <string name="chat_send_message">Wyślij</string>
 
+    <!--PLACEHOLDERS-->
+    <string name="placeholder_username">nazwa</string>
+    <string name="placeholder_description">opis</string>
+
     <!--MISC-->
     <string name="misc_people">Ludzie z podobnymi zainteresowaniami:</string>
     <string name="misc_chat_with">Chat z użytkownikiem </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

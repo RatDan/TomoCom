@@ -14,17 +14,6 @@ public class PanelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_panel);
 
-        Button findPeopleButton = (Button)findViewById(R.id.findPeopleButton);
-        findPeopleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PanelActivity.this,MatchedPeopleActivity.class));
-            }
-        });
-
-        Button chatsButton = (Button)findViewById(R.id.chatsButton);
-        
-
         Button changeInterestsButton = (Button)findViewById(R.id.changeInterestsButton);
         Intent intentFromPanel = new Intent(PanelActivity.this, InterestSelectorActivity.class);
         intentFromPanel.putExtra("panelData", "1");

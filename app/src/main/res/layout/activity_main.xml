@@ -63,8 +63,21 @@
         android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="49dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="49dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="39dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

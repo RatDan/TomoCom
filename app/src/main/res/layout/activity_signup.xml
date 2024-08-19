@@ -4,63 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".SignupActivity">
 
-    <!--Przycisk powrotu-->
+    <TextView
+        android:id="@+id/emailTV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="1dp"
+        android:text="@string/text_email"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameInfoTV" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="22dp"
+        android:ems="10"
+        android:hint="@string/email_hint"
+        android:importantForAutofill="no"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/passwordTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTV" />
+
     <ImageButton
         android:id="@+id/returnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="27dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        android:background="@null"
         android:contentDescription="@string/image_desc"
         app:layout_constraintBottom_toTopOf="@+id/usernameTV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/homeAsUpIndicator" />
-
-    <!--Napis Nazwa użytkownika: -->
-
-    <!--Pole nazwy użytkownika-->
-
-    <!--Opis nazwy użytkownika-->
-
-    <!--Napis Hasło:-->
-
-    <!--Pole tekstowe hasła-->
-
-    <!--Opis hasła-->
-
-    <!--Napis Wiek:-->
-
-    <!--Pole wieku-->
-
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
-        android:autofillHints="username"
-        android:ems="10"
-        android:hint="@string/username_hint"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/usernameInfoTV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
+        app:srcCompat="@drawable/app_back" />
 
     <TextView
-        android:id="@+id/ageTV"
+        android:id="@+id/ageInfoTV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
-        android:text="@string/text_age"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/age"
+        android:layout_marginBottom="30dp"
+        android:text="@string/age_desc"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInfoTV" />
+        app:layout_constraintTop_toBottomOf="@+id/age" />
 
     <EditText
         android:id="@+id/age"
@@ -78,17 +80,31 @@
         app:layout_constraintTop_toBottomOf="@+id/ageTV" />
 
     <TextView
+        android:id="@+id/ageTV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:text="@string/text_age"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInfoTV" />
+
+    <TextView
         android:id="@+id/passwordTV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
+        android:layout_marginBottom="1dp"
         android:text="@string/text_password"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameInfoTV" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <EditText
         android:id="@+id/password"
@@ -96,6 +112,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
+        android:layout_marginBottom="1dp"
         android:autofillHints="password"
         android:ems="10"
         android:hint="@string/password_hint"
@@ -106,42 +123,12 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordTV" />
 
     <TextView
-        android:id="@+id/usernameTV"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="513dp"
-        android:text="@string/text_username"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/registerButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/usernameInfoTV"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/username_desc"
-        android:textColor="@color/gray"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/passwordTV"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    <TextView
         android:id="@+id/passwordInfoTV"
         android:layout_width="0dp"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="23dp"
         android:text="@string/password_desc"
         android:textColor="@color/gray"
         android:textSize="15sp"
@@ -151,33 +138,62 @@
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <TextView
-        android:id="@+id/ageInfoTV"
+        android:id="@+id/usernameInfoTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="27dp"
+        android:text="@string/username_desc"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/emailTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <TextView
+        android:id="@+id/usernameTV"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
-        android:layout_marginBottom="236dp"
-        android:text="@string/age_desc"
-        android:textColor="@color/gray"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/text_username"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/age" />
+        app:layout_constraintTop_toBottomOf="@+id/returnButton" />
 
-    <!--Przycisk dalej-->
-    <Button
-        android:id="@+id/registerButton"
+    <EditText
+        android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="68dp"
-        android:text="@string/button_register"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="1dp"
+        android:autofillHints="username"
+        android:ems="10"
+        android:hint="@string/username_hint"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/usernameInfoTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/registerButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="71dp"
+        android:text="@string/button_register"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ageInfoTV" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

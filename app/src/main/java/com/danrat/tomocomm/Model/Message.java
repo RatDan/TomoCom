@@ -7,11 +7,11 @@ public class Message {
     User sender;
     Date createdAt;
 
-    public Message (String message, User sender, Date createdAt)
+    public Message (String message, User sender)
     {
         this.message=message;
         this.sender=sender;
-        this.createdAt=createdAt;
+        this.createdAt= new Date();
     }
 
     public String getMessage() {return this.message;}

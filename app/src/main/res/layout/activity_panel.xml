@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="243dp"
-        android:text="@string/button_findPeople"
+        android:text="s"
         app:layout_constraintEnd_toEndOf="@+id/chatsButton"
         app:layout_constraintStart_toStartOf="@+id/chatsButton"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +31,7 @@
         android:id="@+id/chatsButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_chats"
+        android:text="s"
         app:layout_constraintEnd_toEndOf="@+id/changeInterestsButton"
         app:layout_constraintStart_toStartOf="@+id/changeInterestsButton"
         app:layout_constraintTop_toBottomOf="@+id/findPeopleButton" />
@@ -40,7 +40,7 @@
         android:id="@+id/changeInterestsButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_changeInterests"
+        android:text="s"
         app:layout_constraintEnd_toEndOf="@+id/logoutButton"
         app:layout_constraintStart_toStartOf="@+id/logoutButton"
         app:layout_constraintTop_toBottomOf="@+id/chatsButton" />
@@ -49,7 +49,7 @@
         android:id="@+id/logoutButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_logout"
+        android:text="s"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/changeInterestsButton" />

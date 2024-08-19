@@ -10,32 +10,32 @@
         android:id="@+id/returnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
         android:contentDescription="@string/image_desc"
         app:layout_constraintBottom_toTopOf="@+id/usernameTV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/homeAsUpIndicator" />
+        app:srcCompat="@drawable/app_back" />
 
     <TextView
         android:id="@+id/usernameTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginStart="10dp"
         android:text="@string/misc_chat_with"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/returnButton" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="3dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +45,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chatRV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
