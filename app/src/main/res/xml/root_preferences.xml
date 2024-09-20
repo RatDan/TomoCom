@@ -1,15 +1,16 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/settings_title_general">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/settings_signature"
-            app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             app:key="mode"
             app:title="@string/settings_mode" />
+
+        <SwitchPreferenceCompat
+            app:key="skip"
+            app:summary="@string/settings_skip_summary"
+            app:title="@string/settings_skip" />
 
         <ListPreference
             app:defaultValue="reply"

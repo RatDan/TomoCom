@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/IV"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:src="@drawable/nav_profile"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="7dp">
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <TextView
+                android:id="@+id/TV1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/IV"
+                android:textStyle="bold"
+                android:text="@string/placeholder_username"
+                android:textSize="20sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/TV2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/IV"
+                android:layout_below="@id/TV1"
+                android:text="@string/placeholder_message"
+                android:textSize="18sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/TV3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/card_time">
+            </TextView>
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

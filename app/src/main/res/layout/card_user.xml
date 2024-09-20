@@ -7,12 +7,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_margin="10dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp">
 
@@ -21,12 +16,26 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp">
 
+                <ImageView
+                    android:id="@+id/IV"
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/addButton"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/nav_profile"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginBottom="7dp">
+                </ImageView>
+
                 <TextView
                     android:id="@+id/TV1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/IV"
                     android:textStyle="bold"
-                    android:text="">
+                    android:text="@string/placeholder_username">
                 </TextView>
 
                 <TextView
@@ -34,6 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/TV1"
+                    android:layout_toEndOf="@id/IV"
                     android:text="@string/card_age">
                 </TextView>
 
@@ -42,17 +52,64 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/TV2"
+                    android:layout_toEndOf="@id/IV"
                     android:text="@string/card_interests">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/TV4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV3"
+                    android:layout_toEndOf="@id/IV"
+                    android:text="@string/match_level">
                 </TextView>
 
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/TV3"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@id/TV4"
+                    android:scaleY="2"
+                    android:layout_toEndOf="@id/IV"
                     android:max="100"
-                    android:progress="0"/>
+                    android:progress="0"
+                    android:indeterminateTintMode="src_atop"
+                    android:indeterminateTint="@color/light_purple"/>
+
+                <ImageButton
+                    android:id="@+id/addButton"
+                    android:contentDescription="@string/image_add"
+                    android:src="@drawable/card_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/progressBar"
+                    android:layout_toStartOf="@+id/centerV"
+                    android:background="@color/light_purple">
+
+                </ImageButton>
+
+                <View
+                    android:id="@+id/centerV"
+                    android:layout_width="7dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/progressBar"
+                    android:layout_centerHorizontal="true">
+                </View>
+
+                <ImageButton
+                    android:id="@+id/skipButton"
+                    android:contentDescription="@string/image_skip"
+                    android:src="@drawable/card_skip"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/progressBar"
+                    android:layout_toEndOf="@+id/centerV"
+                    android:background="@color/purple">
+
+                </ImageButton>
 
             </RelativeLayout>
 

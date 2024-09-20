@@ -20,6 +20,10 @@
             app:key="interests" />
 
         <Preference
+            app:title="@string/profile_change_description"
+            app:key="description" />
+
+        <Preference
             app:title="@string/profile_delete"
             app:key="delete" />
 

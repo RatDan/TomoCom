@@ -13,7 +13,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/profileImageView"
+                android:id="@+id/profileIV"
                 android:layout_marginTop="10dp"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -26,12 +26,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_username"
-                android:layout_below="@+id/profileImageView"
+                android:layout_below="@+id/profileIV"
                 android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/profileDescriptionTV"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_description"
@@ -63,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profileAgeTV"
                 android:layout_centerHorizontal="true"
-                android:text="@string/button_addFriend" />
+                android:text="@string/button_sendLike" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/skipButton"

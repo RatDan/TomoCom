@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TomoComm"
+rootProject.name = "TomoCom"
 include(":app")
  
