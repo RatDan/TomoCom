@@ -8,13 +8,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.danrat.tomocom.Adapter.FriendListAdapter;
-import com.danrat.tomocom.Adapter.UserListAdapter;
 import com.danrat.tomocom.Model.Chat;
 import com.danrat.tomocom.Model.ChatRoomsViewModel;
 import com.danrat.tomocom.Model.Message;
@@ -35,13 +33,16 @@ public class FriendsFragment extends Fragment {
 
     private List<Chat> chatList;
     private List<String> usernames;
-    private List<String> uids;
+    private List<String> uidList;
     private List<String> friends;
     private List<Date> dateList;
     private List<User> users;
     private List<Message> messages;
+    private List<String> tempMembers;
     private RecyclerView recyclerView;
     private FriendListAdapter adapter;
+    ChatRoomsViewModel chatRoomsViewModel;
+    UserListViewModel userListViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,65 +53,93 @@ public class FriendsFragment extends Fragment {
         String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         DocumentReference documentReference = fireStore.collection("users").document(userID);
 
-        // Pokazanie BottomNavigation po wyjściu z chatu
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
 
         chatList = new ArrayList<>();
         usernames = new ArrayList<>();
         friends = new ArrayList<>();
-        uids = new ArrayList<>();
+        uidList = new ArrayList<>();
         dateList = new ArrayList<>();
 
-        UserListViewModel userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
-        ChatRoomsViewModel chatRoomsViewModel = new ViewModelProvider(requireActivity()).get(ChatRoomsViewModel.class);
+        recyclerView = view.findViewById(R.id.friendsRV);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
+        chatRoomsViewModel = new ViewModelProvider(requireActivity()).get(ChatRoomsViewModel.class);
+
         userListViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
-            if (userList != null && adapter == null) {
+            if (userList != null) {
                 users = new ArrayList<>(userList);
                 for (User user : users) {
-                    if (Objects.equals(user.getUid(), userID))
+                    if (Objects.equals(user.getUid(), userID)) {
                         friends = user.getFriends();
+                    }
                 }
                 users.removeIf(user -> Objects.equals(user.getUid(), userID));
-                for (User user : users) {
-                    usernames.add(user.getUsername());
-                    uids.add(user.getUid());;
-                }
-                chatRoomsViewModel.fetchChatData(friends);
+                //chatRoomsViewModel.fetchChatData(friends);
             }
         });
 
         chatRoomsViewModel.getChatRooms().observe(getViewLifecycleOwner(), chats -> {
             if (chats != null) {
+                chatList.clear();
+                usernames.clear();
+                uidList.clear();
+                dateList.clear();
+
                 for (Chat chat : chats) {
-                    if (chat.getMembers().contains(userID)) {
+                    tempMembers = chat.getMembers();
+                    if (tempMembers.contains(userID)) {
+                        tempMembers.remove(userID);
+                        for (User user : users) {
+                            if (Objects.equals(user.getUid(), tempMembers.get(0))) {
+                                usernames.add(user.getUsername());
+                            }
+                        }
+                        uidList.add(tempMembers.get(0));
                         chatList.add(chat);
                         messages = chat.getMessages();
-                        if (messages.isEmpty())
+                        if (messages.isEmpty()) {
                             dateList.add(new Date());
-                        else
-                            for (Message message : messages) dateList.add(message.getCreatedAt());
+                        } else {
+                            for (Message message : messages) {
+                                dateList.add(message.getCreatedAt());
+                            }
+                        }
                     }
                 }
-                recyclerView = view.findViewById(R.id.friendsRV);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                FragmentUtils.sortLists(dateList,chatList, Comparator.naturalOrder());
-                adapter = new FriendListAdapter(chatList, usernames);
-                recyclerView.setAdapter(adapter);
 
-                adapter.setOnItemClickListener(new FriendListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(List<Message> messages) {
-                        ChatFragment fragment = ChatFragment.newInstance(messages);
-                        FragmentManager fragmentManager = getParentFragmentManager();
-                        FragmentUtils.replaceFragment(fragmentManager, fragment);
-                    }
-                });
+                FragmentUtils.sortLists(dateList, chatList, Comparator.naturalOrder());
+
+                if (adapter == null) {
+                    adapter = new FriendListAdapter(chatList, usernames, uidList);
+                    recyclerView.setAdapter(adapter);
+
+                    adapter.setOnItemClickListener(new FriendListAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(List<Message> messages, String username, String uid) {
+                            ChatFragment fragment = ChatFragment.newInstance(messages, username, uid);
+                            FragmentManager fragmentManager = getParentFragmentManager();
+                            FragmentUtils.replaceFragment(fragmentManager, fragment);
+                        }
+                    });
+                } else {
+                    adapter.updateData(chatList, usernames, uidList);
+                }
             }
         });
 
         userListViewModel.fetchUserData();
+        chatRoomsViewModel.fetchChatData();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        userListViewModel.fetchUserData();
+        chatRoomsViewModel.fetchChatData();
     }
 }

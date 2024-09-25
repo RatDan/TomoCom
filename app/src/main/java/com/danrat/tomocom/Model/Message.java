@@ -22,8 +22,11 @@ public class Message {
         this.createdAt=new Date();
     }
 
-    public String getSender() {return this.senderId;}
-    public String getReceiver() {return this.receiverId;}
-    public String getMessage() {return this.message;}
-    public Date getCreatedAt() {return this.createdAt;}
+    public void setSender(String senderId) { this.senderId=senderId; }
+    public void setReceiver(String receiverId) { this.receiverId=receiverId; }
+
+    public String getSender() { return this.senderId; }
+    public String getReceiver() { return this.receiverId; }
+    public String getMessage() { return this.message; }
+    public Date getCreatedAt() { return this.createdAt; }
 }

@@ -4,16 +4,12 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,30 +19,29 @@ public class ChatRoomsViewModel extends ViewModel {
 
     public LiveData<List<Chat>> getChatRooms() { return chatDataList; }
 
-    public void fetchChatData (List<String> friends) {
+    public void fetchChatData (){//List<String> friends) {
         if (chatDataList.getValue() != null && !chatDataList.getValue().isEmpty())
             return;
-        if (friends.isEmpty())
-            friends.add("dummy");
+        //if (friends.isEmpty())
+        //    return;
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("chat_rooms")
-                .whereArrayContainsAny("members",friends)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                //.whereArrayContainsAny("members",friends)
+                .addSnapshotListener((snapshot, e) -> {
+                    if (e != null) {
+                        Log.w("Firestore", "Listen failed", e);
+                        return;
+                    }
+
+                    if (snapshot != null && !snapshot.isEmpty()) {
                             List<Chat> chatRooms = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            for (DocumentSnapshot document : snapshot.getDocuments()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Chat chat = document.toObject(Chat.class);
                                 chatRooms.add(chat);
                             }
                             chatDataList.setValue(chatRooms);
-                        } else {
-                            Log.d(TAG, "get error: ", task.getException());
                         }
-                    }
                 });
     }
 }

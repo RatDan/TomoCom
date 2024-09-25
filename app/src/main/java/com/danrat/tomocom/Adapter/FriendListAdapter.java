@@ -1,5 +1,6 @@
 package com.danrat.tomocom.Adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.danrat.tomocom.Model.Chat;
 import com.danrat.tomocom.Model.Message;
+import com.danrat.tomocom.Model.User;
 import com.danrat.tomocom.R;
 
 import java.text.DateFormat;
@@ -18,17 +20,19 @@ import java.util.List;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
 
-    private final List<Chat> chatList;
-    private final List<String> usernameList;
+    private List<Chat> chatList;
+    private List<String> usernameList;
+    private List<String> uidList;
     private OnItemClickListener listener;
 
-    public FriendListAdapter(List<Chat> chatList, List<String> usernameList) {
-        this.usernameList = usernameList;
+    public FriendListAdapter(List<Chat> chatList, List<String> usernameList, List<String> uidList) {
         this.chatList = chatList;
+        this.usernameList = usernameList;
+        this.uidList = uidList;
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Message> messages);
+        void onItemClick(List<Message> messages, String username, String uid);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -47,14 +51,14 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         holder.clear();
         Chat chat = chatList.get(position);
         String username = usernameList.get(position);
+        String uid = uidList.get(position);
         holder.bind(chat, username);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onItemClick(chat.getMessages());
+                    listener.onItemClick(chat.getMessages(), username, uid);
                 }
             }
         });
@@ -66,12 +70,21 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     public void removeItem (int position) {
         chatList.remove(position);
         usernameList.remove(position);
+        uidList.remove(position);
         notifyItemRemoved(position);
     }
 
     public static String formatDate(Date date)
     {
         return DateFormat.getDateTimeInstance().format(date);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(List<Chat> newChatRooms, List<String> newUsernames, List<String> newUids) {
+        this.chatList = newChatRooms;
+        this.usernameList = newUsernames;
+        this.uidList = newUids;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder

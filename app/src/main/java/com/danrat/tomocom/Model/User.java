@@ -1,5 +1,6 @@
 package com.danrat.tomocom.Model;
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.Collections;

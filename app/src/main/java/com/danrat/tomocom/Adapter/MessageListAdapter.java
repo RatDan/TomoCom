@@ -14,12 +14,22 @@ import com.danrat.tomocom.R;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
-    private final List<Message> messages;
 
-    public MessageListAdapter(List<Message> messages) { this.messages = messages; }
+    private final List<Message> messages;
+    private final String username;
+    private final String senderId;
+    private final String receiverId;
+
+    public MessageListAdapter(List<Message> messages, String username, String senderId, String receiverId) {
+        this.messages = messages;
+        this.username = username;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+    }
 
     @NonNull
     @Override
@@ -40,7 +50,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.clear();
         Message message = messages.get(position);
-        holder.bind(message);
+        holder.bind(message, username, senderId, receiverId);
     }
 
     @Override
@@ -49,16 +59,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     @Override
     public int getItemViewType (int position)
     {
-        /*Message message = messages.get(position);
-        if (message.getSender()%2==0)
+        Message message = messages.get(position);
+        if (Objects.equals(message.getSender(), senderId) && Objects.equals(message.getReceiver(), receiverId))
         {
             return 1;
         }
         else
         {
             return 2;
-        }*/
-        return 1;
+        }
     }
 
     public static String formatDate(Date date)
@@ -68,7 +77,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        private final TextView textViewUsername, textViewMessage, textViewDate;
+        private final TextView textViewUsername;
+        private final TextView textViewMessage;
+        private final TextView textViewDate;
 
         ViewHolder(View itemView)
         {
@@ -78,9 +89,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             textViewDate = itemView.findViewById(R.id.dateTV);
         }
 
-        void bind (Message message)
+        void bind (Message message, String username, String senderId, String receiverId)
         {
-            textViewUsername.setText(""); //TODO: GET USERNAME FROM DATABASE
+            textViewUsername.setText(username);
             textViewMessage.setText(message.getMessage());
             textViewDate.setText(formatDate(message.getCreatedAt()));
         }

@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -46,8 +48,8 @@ public class FindFragment extends Fragment {
     private List<User> users;
     private RecyclerView recyclerView;
     private UserListAdapter adapter;
+    UserListViewModel userListViewModel;
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,27 +64,34 @@ public class FindFragment extends Fragment {
         friendList = new ArrayList<>();
         skippedList = new ArrayList<>();
 
-        UserListViewModel userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
+        recyclerView = view.findViewById(R.id.matchedRV);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
         userListViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
+            users = new ArrayList<>(userList);
+            matchLevelList.clear();
+            for (User user : users) {
+                if (Objects.equals(user.getUid(), userID)) {
+                    interestList = user.getInterests();
+                    friendList = user.getFriends();
+                    skippedList = user.getSkipped();
+                }
+            }
+
+            users.removeIf(user -> Objects.equals(user.getUid(), userID));
+            users.removeIf(user -> friendList.contains(user.getUid()) || skippedList.contains(user.getUid()));
+
+            for (User user : users) {
+                matchLevelList.add(calculateMatchLevel(interestList, user.getInterests()));
+            }
+
+            FragmentUtils.sortLists(matchLevelList, users, Comparator.reverseOrder());
+
             if (adapter == null) {
-                users = new ArrayList<>(userList);
-                for (User user : users) {
-                    if (Objects.equals(user.getUid(), userID)) {
-                        interestList = user.getInterests();
-                        friendList = user.getFriends();
-                        skippedList = user.getSkipped();
-                    }
-                }
-                users.removeIf(user -> Objects.equals(user.getUid(), userID));
-                users.removeIf(user -> friendList.contains(user.getUid()) || skippedList.contains(user.getUid()));
-                for (User user : users) {
-                    matchLevelList.add(calculateMatchLevel(interestList, user.getInterests()));
-                }
-                FragmentUtils.sortLists(matchLevelList,users,Comparator.reverseOrder());
-                recyclerView = view.findViewById(R.id.matchedRV);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 adapter = new UserListAdapter(users, matchLevelList);
                 recyclerView.setAdapter(adapter);
+
                 adapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(String userName, int age, String interests, String description) {
@@ -94,49 +103,46 @@ public class FindFragment extends Fragment {
                     public void onAddClick(String uid, String username, int position) {
                         documentReference
                                 .update("friends", FieldValue.arrayUnion(uid))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG,"onSuccess: Document "+ userID +" friends updated successfully");
-                                        Toast.makeText(getActivity(), "Użytkownik " + username + " został dodany do znajomych!",Toast.LENGTH_SHORT).show();
-                                        for (User user : users) {
-                                            if (user.getFriends().contains(userID) && friendList.contains(user.getUid()) && Objects.equals(uid, user.getUid())) {
-                                                List<String> members = Arrays.asList(userID,uid);
-                                                fireStore.collection("chat_rooms")
-                                                        .add(new Chat(members))
-                                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                            @Override
-                                                            public void onSuccess(DocumentReference documentReference) {
-                                                                Log.d(TAG, "Chat room added with ID: " + documentReference.getId());
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Log.w(TAG, "Error adding chat document", e);
-                                                            }
-                                                        });
-                                            }
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(getActivity(), "Użytkownik " + username + " został dodany do znajomych!", Toast.LENGTH_SHORT).show();
+                                    friendList.add(uid);
+                                    for (User user : userList) {
+                                        if (user.getFriends().contains(userID) && friendList.contains(user.getUid()) && Objects.equals(uid, user.getUid())) {
+                                            List<String> members = Arrays.asList(userID,uid);
+                                            fireStore.collection("chat_rooms")
+                                                    .add(new Chat(members))
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Log.d(TAG, "Chat room added with ID: " + documentReference.getId());
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w(TAG, "Error adding chat document", e);
+                                                        }
+                                                    });
                                         }
-                                        adapter.removeItem(position);
                                     }
-                                });
+                                    adapter.removeItem(position);
+                                })
+                                .addOnFailureListener(e -> Log.w(TAG, "Error adding user to friends", e));
                     }
 
                     @Override
                     public void onSkipClick(String uid, String username, int position) {
                         documentReference
-                                .update("skipped",FieldValue.arrayUnion(uid))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG,"onSuccess: Document "+ userID +" skipped updated successfully");
-                                        Toast.makeText(getActivity(), "Użytkownik " + username + " został pominięty!",Toast.LENGTH_SHORT).show();
-                                        adapter.removeItem(position);
-                                    }
-                                });
+                                .update("skipped", FieldValue.arrayUnion(uid))
+                                .addOnSuccessListener(unused -> {
+                                    Toast.makeText(getActivity(), "Użytkownik " + username + " został pominięty!", Toast.LENGTH_SHORT).show();
+                                    adapter.removeItem(position);
+                                })
+                                .addOnFailureListener(e -> Log.w(TAG, "Error skipping user", e));
                     }
                 });
+            } else {
+                adapter.updateData(users, matchLevelList);
             }
         });
 

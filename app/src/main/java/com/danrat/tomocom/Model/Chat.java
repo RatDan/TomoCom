@@ -1,10 +1,12 @@
 package com.danrat.tomocom.Model;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.util.Collections;
 import java.util.List;
 
 public class Chat {
-    //private final int cid = 0;
+    private String cid = "";
     private final List<String> members;
     private final List<Message> messages;
     private final Message lastMessage;
@@ -27,7 +29,11 @@ public class Chat {
         this.lastMessage = new Message();
     }
 
-    //public int getCid() { return this.cid; }
+    @DocumentId
+    public void setCid(String cid) { this.cid = cid; }
+
+    @DocumentId
+    public String getCid() { return this.cid; }
     public List<String> getMembers() { return this.members; }
     public List<Message> getMessages() { return this.messages; }
     public Message getLastMessage() { return this.lastMessage; }

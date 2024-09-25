@@ -1,5 +1,6 @@
 package com.danrat.tomocom.Adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,8 @@ import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
-    private final List<User> userList;
-    private final List<Integer> matchLevelList;
+    private List<User> userList;
+    private List<Integer> matchLevelList;
     private OnItemClickListener listener;
 
     public UserListAdapter(List<User> userList, List<Integer> matchLevelList) {
@@ -87,6 +88,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         userList.remove(position);
         matchLevelList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(List<User> newUsers, List<Integer> newMatchLevels) {
+        this.userList = newUsers;
+        this.matchLevelList = newMatchLevels;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
