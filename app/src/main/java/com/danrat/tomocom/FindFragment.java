@@ -26,6 +26,7 @@ import com.danrat.tomocom.Model.UserListViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -48,7 +49,6 @@ public class FindFragment extends Fragment {
     private List<User> users;
     private RecyclerView recyclerView;
     private UserListAdapter adapter;
-    UserListViewModel userListViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +58,7 @@ public class FindFragment extends Fragment {
         FirebaseFirestore fireStore = FirebaseFirestore.getInstance();
         String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         DocumentReference documentReference = fireStore.collection("users").document(userID);
+        CollectionReference chatReference = fireStore.collection("chat_rooms");
 
         matchLevelList = new ArrayList<>();
         interestList = new ArrayList<>();
@@ -67,10 +68,11 @@ public class FindFragment extends Fragment {
         recyclerView = view.findViewById(R.id.matchedRV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
+        UserListViewModel userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
         userListViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
             users = new ArrayList<>(userList);
             matchLevelList.clear();
+
             for (User user : users) {
                 if (Objects.equals(user.getUid(), userID)) {
                     interestList = user.getInterests();
@@ -109,8 +111,11 @@ public class FindFragment extends Fragment {
                                     for (User user : userList) {
                                         if (user.getFriends().contains(userID) && friendList.contains(user.getUid()) && Objects.equals(uid, user.getUid())) {
                                             List<String> members = Arrays.asList(userID,uid);
-                                            fireStore.collection("chat_rooms")
-                                                    .add(new Chat(members))
+                                            DocumentReference newChatRef = chatReference.document();
+                                            String cId = newChatRef.getId();
+                                            Chat tempChat = new Chat(cId, members);
+                                            /* fireStore.collection("chat_rooms")
+                                                    .add(tempChat)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                         @Override
                                                         public void onSuccess(DocumentReference documentReference) {
@@ -122,6 +127,14 @@ public class FindFragment extends Fragment {
                                                         public void onFailure(@NonNull Exception e) {
                                                             Log.w(TAG, "Error adding chat document", e);
                                                         }
+                                                    }); */
+                                            newChatRef
+                                                    .set(tempChat)
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        Log.d(TAG, "Chat room added with ID: " + cId);
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        Log.w(TAG, "Error adding chat document", e);
                                                     });
                                         }
                                     }

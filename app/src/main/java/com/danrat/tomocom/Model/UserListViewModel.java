@@ -40,6 +40,9 @@ public class UserListViewModel extends ViewModel {
                             userList.add(user);
                         }
                         userDataList.setValue(userList);
+                    } else {
+                        List<User> userList = new ArrayList<>();
+                        userDataList.setValue(userList);
                     }
                 });
     }

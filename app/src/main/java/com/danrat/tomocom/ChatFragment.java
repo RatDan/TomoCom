@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.danrat.tomocom.Adapter.FriendListAdapter;
 import com.danrat.tomocom.Adapter.MessageListAdapter;
 import com.danrat.tomocom.Model.Message;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -65,9 +64,10 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.activity_chat, container, false);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
             public void handleOnBackPressed() {
                 if (getParentFragment() != null && getParentFragmentManager().getBackStackEntryCount() > 0) {
                     getParentFragmentManager().popBackStack();

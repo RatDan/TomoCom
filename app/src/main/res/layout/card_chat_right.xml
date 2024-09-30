@@ -5,24 +5,13 @@
     android:layout_marginBottom="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/usernameTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginEnd="10dp"
-        android:text="@string/placeholder_username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
-
     <androidx.cardview.widget.CardView
         android:id="@+id/chatCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/usernameTV"
+        app:layout_constraintTop_toTopOf="parent"
         app:cardBackgroundColor="@color/purple"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"

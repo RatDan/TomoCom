@@ -32,7 +32,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Message> messages, String username, String uid);
+        void onItemClick(List<Message> messages, String username, String uid, String cid);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -58,7 +58,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onItemClick(chat.getMessages(), username, uid);
+                    listener.onItemClick(chat.getMessages(), username, uid, chat.getCid());
                 }
             }
         });
@@ -74,8 +74,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         notifyItemRemoved(position);
     }
 
-    public static String formatDate(Date date)
-    {
+    public static String formatDate(Date date) {
         return DateFormat.getDateTimeInstance().format(date);
     }
 

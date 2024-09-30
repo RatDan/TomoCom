@@ -17,6 +17,9 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".InterestSelectorActivity"
             android:exported="false" />
         <activity

@@ -1,5 +1,6 @@
 package com.danrat.tomocom.Adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.danrat.tomocom.Model.Chat;
 import com.danrat.tomocom.Model.Message;
 import com.danrat.tomocom.R;
 
@@ -19,7 +21,7 @@ import java.util.Objects;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
 
-    private final List<Message> messages;
+    private List<Message> messages;
     private final String username;
     private final String senderId;
     private final String receiverId;
@@ -56,6 +58,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     @Override
     public int getItemCount() { return messages.size(); }
 
+    public void removeItem (int position) {
+        messages.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public int getItemViewType (int position)
     {
@@ -75,6 +82,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         return DateFormat.getDateTimeInstance().format(date);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(List<Message> newMessages) {
+        this.messages = newMessages;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         private final TextView textViewUsername;
@@ -91,13 +104,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         void bind (Message message, String username, String senderId, String receiverId)
         {
-            textViewUsername.setText(username);
+            if (textViewUsername != null)
+                textViewUsername.setText(username);
             textViewMessage.setText(message.getMessage());
             textViewDate.setText(formatDate(message.getCreatedAt()));
         }
 
         public void clear() {
-            textViewUsername.setText(R.string.placeholder_username);
+            if (textViewUsername != null)
+                textViewUsername.setText(R.string.placeholder_username);
             textViewMessage.setText(R.string.placeholder_message);
             textViewDate.setText(R.string.placeholder_date);
         }
