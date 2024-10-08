@@ -1,6 +1,7 @@
 package com.danrat.tomocom;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -12,14 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.danrat.tomocom.Model.ChatRoomsViewModel;
-import com.danrat.tomocom.Model.User;
-import com.danrat.tomocom.Model.CurrentUserViewModel;
-import com.danrat.tomocom.Model.UserListViewModel;
+import com.danrat.tomocom.ViewModel.ChatRoomsViewModel;
+import com.danrat.tomocom.ViewModel.HomeViewModel;
+import com.danrat.tomocom.ViewModel.UserListViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity
         implements BottomNavigationView
@@ -28,18 +25,40 @@ public class HomeActivity extends AppCompatActivity
     BottomNavigationView bottomNavigationView;
     private boolean backPressedOnce = false;
     private final Handler backPressHandler = new Handler();
-    private final Runnable backPressRunnable = new Runnable() {
-        @Override
-        public void run() {
-            backPressedOnce = false;
-        }
-    };
+    private final Runnable backPressRunnable = () -> backPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        //FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        homeViewModel.checkUserData();
+
+        homeViewModel.isProfilePictureMissing().observe(this, isMissing -> {
+            if (isMissing) {
+                Intent intent = new Intent(HomeActivity.this, ProfilePictureActivity.class);
+                intent.putExtra("ButtonSave", "Zapisz");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        homeViewModel.areInterestsMissing().observe(this, areMissing -> {
+            if (areMissing) {
+                Intent intent = new Intent(HomeActivity.this, InterestSelectorActivity.class);
+                intent.putExtra("ButtonSave", "Zapisz");
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        homeViewModel.getErrorMessage().observe(this, errorMessage -> {
+            if (errorMessage != null) {
+                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -57,18 +76,6 @@ public class HomeActivity extends AppCompatActivity
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.nav_find);
-        UserListViewModel userListViewModel = new ViewModelProvider(this).get(UserListViewModel.class);
-        ChatRoomsViewModel chatRoomsViewModel = new ViewModelProvider(this).get(ChatRoomsViewModel.class);
-        //CurrentUserViewModel currentUserViewModel = new ViewModelProvider(this).get(CurrentUserViewModel.class);
-
-        //String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-        //currentUserViewModel.loadUserDocument(userID);
-
-        /* currentUserViewModel.getUserDocument().observe(this, documentSnapshot -> {
-            User user = documentSnapshot.toObject(User.class);
-            if (user != null)
-                Toast.makeText(HomeActivity.this, "Witaj, " + user.getUsername(),Toast.LENGTH_SHORT).show();
-        }); */
     }
 
 

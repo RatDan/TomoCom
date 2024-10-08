@@ -9,25 +9,23 @@ import java.util.Set;
 
 public class User {
     private String uid="";
-    private final String email;
     private final String username;
     private final int age;
     private String description="";
+    private String profileImageUrl;
 
     private final List<Interests> interests = Collections.emptyList();
     private List<String> friends = Collections.emptyList();
     private List<String> skipped = Collections.emptyList();
 
-    public User (String email, String username, int age)
+    public User (String username, int age)
     {
-        this.email = email;
         this.username = username;
         this.age = age;
     }
 
     public User ()
     {
-        this.email="";
         this.username="";
         this.age=0;
     }
@@ -38,12 +36,10 @@ public class User {
     public void setSkipped (List<String> skipped) { this.skipped = skipped; }
     public void setFriends (List<String> friends) { this.friends = friends; }
     public void setDescription (String description) { this.description=description; }
+    public void setProfileImageUrl (String profileImageUrl) { this.profileImageUrl = profileImageUrl; }
 
     public String getUid() { return uid; }
-    public String getEmail() { return email; }
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
     public int getAge () {
         return age;
     }
@@ -51,6 +47,7 @@ public class User {
     public List<Interests> getInterests () { return interests; }
     public List<String> getSkipped () { return skipped; }
     public List<String> getFriends () { return friends; }
+    public String getProfileImageUrl () { return profileImageUrl; }
 
     @Exclude
     public String getInterestsString() {

@@ -48,11 +48,14 @@ dependencies {
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4") //CONSTRAINTLAYOUT
     implementation("androidx.cardview:cardview:1.0.0") //CARDVIEW
-    implementation(platform("com.google.firebase:firebase-bom:33.2.0")) //FIREBASE BOM
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0")) //FIREBASE BOM
+    implementation ("com.google.firebase:firebase-storage:21.0.1") //FIREBASE STORAGE
     implementation("de.hdodenhof:circleimageview:3.1.0") //CIRCLEIMAGEVIEW
     implementation("com.google.firebase:firebase-analytics") //FIREBASE ANALYTICS
     implementation("com.google.firebase:firebase-auth") //FIREBASE AUTHENTICATION
     implementation("com.google.firebase:firebase-firestore:25.1.0") //FIRESTORE
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
 
 
 

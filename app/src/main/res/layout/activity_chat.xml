@@ -4,34 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatFragment">
+    tools:context=".ChatActivity">
 
-    <TextView
-        android:id="@+id/usernameTV"
+    <RelativeLayout
+        android:id="@+id/topRV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/misc_chat_with"
-        android:textSize="25sp" />
+        android:layout_height="60dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileIV"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/nav_profile">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+
+        <TextView
+            android:id="@+id/usernameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/profileIV"
+            android:text="@string/placeholder_username"
+            android:textSize="25sp" />
+
+    </RelativeLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/usernameTV"
-        android:layout_above="@+id/relativeLayout"/>
+        android:layout_below="@id/topRV"
+        android:layout_above="@+id/bottomRV"/>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/bottomRV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true">
 
         <EditText
             android:id="@+id/messageET"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:imeOptions="actionSend"
             android:background="@android:color/transparent"
@@ -44,7 +65,7 @@
         <ImageButton
             android:id="@+id/sendMessageButton"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignEnd="@+id/messageET"
             android:background="?attr/selectableItemBackground"

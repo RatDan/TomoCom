@@ -1,10 +1,13 @@
 package com.danrat.tomocom.Adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -13,25 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.danrat.tomocom.Model.User;
 import com.danrat.tomocom.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
     private List<User> userList;
     private List<Integer> matchLevelList;
+    private List<String> profilePicturesList;
     private OnItemClickListener listener;
 
-    public UserListAdapter(List<User> userList, List<Integer> matchLevelList) {
+    public UserListAdapter(List<User> userList, List<Integer> matchLevelList, List<String> profilePicturesList) {
         this.userList = userList;
         this.matchLevelList = matchLevelList;
-    } //Konstruktor
+        this.profilePicturesList = profilePicturesList;
+    }
 
     public interface OnItemClickListener {
-        void onItemClick(String userName, int age, String interests, String description);
-        void onAddClick(String uid, String username, int position);
-        void onSkipClick(String uid, String username, int position);
-    } //Interfejs onItemClick
+        void onItemClick(User user);
+        void onAddClick(User user, int position);
+        void onSkipClick(User user, int position);
+    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -49,13 +56,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.clear();
         User user = userList.get(position);
         int matchLevel = matchLevelList.get(position);
-        holder.bind(user, matchLevel);
+        String profilePictureUrl = profilePicturesList.get(position);
+        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+            Picasso.get().load(profilePictureUrl).placeholder(R.drawable.nav_profile).into(holder.profileImageView);
+        } else {
+            holder.profileImageView.setImageResource(R.drawable.nav_profile);
+        }
+        holder.bind(user, matchLevel, profilePictureUrl);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onItemClick(user.getUsername(), user.getAge(), user.getInterestsString(), user.getDescription());
+                    listener.onItemClick(user);
                 }
             }
         });
@@ -64,7 +77,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onAddClick(user.getUid(), user.getUsername(), holder.getAdapterPosition());
+                    listener.onAddClick(user, holder.getAdapterPosition());
                 }
             }
         });
@@ -73,7 +86,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onSkipClick(user.getUid(), user.getUsername(), holder.getAdapterPosition());
+                    listener.onSkipClick(user, holder.getAdapterPosition());
                 }
             }
         });
@@ -84,18 +97,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         return userList.size();
     }
 
-    public void removeItem (int position) {
-        userList.remove(position);
-        matchLevelList.remove(position);
-        notifyItemRemoved(position);
-    }
-
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(List<User> newUsers, List<Integer> newMatchLevels) {
+    public void updateData(List<User> newUsers, List<Integer> newMatchLevels, List<String> newProfilePictureUrls) {
         this.userList = newUsers;
         this.matchLevelList = newMatchLevels;
+        this.profilePicturesList = newProfilePictureUrls;
         notifyDataSetChanged();
     }
+
+    public void updateMatchLevels (List<Integer> matchLevels) {
+        this.matchLevelList = matchLevels;
+    }
+
+    public void updateProfileImages (List<String> profilePictures) { this.profilePicturesList = profilePictures; }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewName;
@@ -105,6 +119,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         private final ProgressBar progressBar;
         private final ImageButton buttonAdd;
         private final ImageButton buttonSkip;
+        private final ImageView profileImageView;
 
         public ViewHolder(final View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -115,6 +130,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             progressBar = itemView.findViewById(R.id.progressBar);
             buttonAdd = itemView.findViewById(R.id.addButton);
             buttonSkip = itemView.findViewById(R.id.skipButton);
+            profileImageView = itemView.findViewById(R.id.profileIV);
         }
 
         public void clear() {
@@ -125,7 +141,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             progressBar.setProgress(0);
         }
 
-        public void bind(User user, int matchLevel) {
+        public void bind(User user, int matchLevel, String profilePictureUrl) {
             textViewName.setText(user.getUsername());
             textViewAge.append(" " + String.valueOf(user.getAge()));
             textViewInterests.append(" " + user.getInterestsString());

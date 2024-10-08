@@ -1,6 +1,7 @@
 package com.danrat.tomocom.Adapter;
 
 import android.annotation.SuppressLint;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.danrat.tomocom.Model.Chat;
 import com.danrat.tomocom.Model.Message;
 import com.danrat.tomocom.R;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
 
@@ -26,7 +26,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     private final String senderId;
     private final String receiverId;
 
-    public MessageListAdapter(List<Message> messages, String username, String senderId, String receiverId) {
+    public MessageListAdapter(List<Message> messages, String username, String senderId, String receiverId) {//, String profileImageUrl) {
         this.messages = messages;
         this.username = username;
         this.senderId = senderId;
@@ -52,7 +52,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.clear();
         Message message = messages.get(position);
-        holder.bind(message, username, senderId, receiverId);
+        holder.bind(message, username);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<Message> newMessages) {
-        this.messages = newMessages;
+        this.messages = new ArrayList<>(newMessages);
         notifyDataSetChanged();
     }
 
@@ -102,7 +102,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             textViewDate = itemView.findViewById(R.id.dateTV);
         }
 
-        void bind (Message message, String username, String senderId, String receiverId)
+        void bind (Message message, String username)//, String profileImageUrl)
         {
             if (textViewUsername != null)
                 textViewUsername.setText(username);
@@ -117,43 +117,5 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             textViewDate.setText(R.string.placeholder_date);
         }
     }
-
-    /*private static class MessageReceivedHolder extends RecyclerView.ViewHolder
-    {
-        private final TextView textViewUsername, textViewMessage, textViewDate;
-
-        MessageReceivedHolder(View itemView)
-        {
-            super(itemView);
-            textViewUsername = itemView.findViewById(R.id.usernameTV);
-            textViewMessage = itemView.findViewById(R.id.messageTV);
-            textViewDate = itemView.findViewById(R.id.dateTV);
-        }
-
-        void bind (Message message)
-        {
-            textViewUsername.setText(message.getSender().getUsername());
-            textViewMessage.setText(message.getMessage());
-            textViewDate.setText(String.valueOf(message.getCreatedAt()));
-        }
-    }
-
-    private static class MessageSentHolder extends RecyclerView.ViewHolder
-    {
-        TextView textViewMessage, textViewDate;
-
-        public MessageSentHolder(View itemView)
-        {
-            super(itemView);
-            textViewMessage=(TextView) itemView.findViewById(R.id.messageTV);
-            textViewDate=(TextView) itemView.findViewById(R.id.dateTV);
-        }
-
-        public void bind (Message message)
-        {
-            textViewMessage.setText(message.getMessage());
-            textViewDate.setText(String.valueOf(message.getCreatedAt()));
-        }
-    }*/
 
 }

@@ -11,23 +11,23 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
             android:padding="10dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/IV"
+                android:id="@+id/profileIV"
                 android:layout_width="85dp"
                 android:layout_height="85dp"
                 android:src="@drawable/nav_profile"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="7dp">
+                android:layout_marginEnd="15dp">
             </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
                 android:id="@+id/TV1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/IV"
+                android:layout_toEndOf="@id/profileIV"
                 android:textStyle="bold"
                 android:text="@string/placeholder_username"
                 android:textSize="20sp">
@@ -35,9 +35,9 @@
 
             <TextView
                 android:id="@+id/TV2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/IV"
+                android:layout_toEndOf="@id/profileIV"
                 android:layout_below="@id/TV1"
                 android:text="@string/placeholder_message"
                 android:textSize="18sp">
@@ -47,9 +47,20 @@
                 android:id="@+id/TV3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="@string/card_time">
+                android:layout_toEndOf="@id/profileIV"
+                android:layout_alignParentBottom="true"
+                android:text="@string/card_time"
+                android:textSize="15sp">
             </TextView>
+
+            <ImageButton
+                android:id="@+id/moreButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/card_more">
+            </ImageButton>
 
 
 

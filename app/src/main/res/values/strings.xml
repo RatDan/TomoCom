@@ -13,10 +13,13 @@
     <string name="image_add">Dodaj znajomego</string>
     <string name="image_skip">Pomiń użytkownika</string>
     <string name="age_desc">Twój wiek jest potrzebny do odblokowania niektórych funkcji aplikacji.</string>
-    <string name="interests_desc">Wybierz pięć swoich zainteresowań: </string>
+    <string name="interests_desc">Wybierz od trzech do pięciu swoich zainteresowań: </string>
+    <string name="picture_desc">Wybierz swoje zdjęcie profilowe: </string>
+    <string name="description_desc">Napisz kilka zdań o sobie: </string>
     <string name="sendImage_desc">Send arrow</string>
     <string name="text_email">Adres Email:</string>
     <string name="email_hint">Twój adres Email</string>
+    <string name="description_hint">Napisz coś o sobie...</string>
     <string name="text_remind_password">Nie pamiętam hasła</string>
 
     <!--BUTTONS-->
@@ -29,6 +32,9 @@
     <string name="button_startChat">Rozpocznij chat</string>
     <string name="button_deleteFriend">Usuń znajomego</string>
     <string name="button_skip">Pomiń</string>
+    <string name="button_save">Zapisz</string>
+    <string name="button_choose_picture">Wybierz zdjęcie</string>
+    <string name="button_reset_password">Resetuj hasło</string>
 
     <!--CARDS-->
     <string name="card_age">Wiek:  </string>
@@ -92,6 +98,10 @@
     <string name="profile_change_picture">Zmień zdjęcie profilowe</string>
     <string name="profile_change_description">Zmień opis</string>
 
+    <!--MORE MENU -->
+    <string name="menu_remove">Usuń znajomego</string>
+    <string name="menu_block">Usuń i zablokuj znajomego</string>
+
     <!--CHAT-->
     <string name="chat_enter_message">Wpisz wiadomość</string>
     <string name="chat_send_message">Wyślij</string>
@@ -107,6 +117,7 @@
     <string name="match_level">Dopasowanie:</string>
     <string name="friends">Znajomi:</string>
     <string name="matched_people">Dopasowani ludzie:</string>
+    <string name="profile_image_desc">Profile Image</string>
 
 
 </resources>

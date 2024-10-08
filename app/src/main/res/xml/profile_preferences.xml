@@ -13,19 +13,41 @@
 
         <Preference
             app:title="@string/profile_change_picture"
-            app:key="change" />
+            app:key="changeProfilePicture">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.danrat.tomocom.ProfilePictureActivity"
+                android:targetPackage="com.danrat.tomocom"
+                android:data="@string/button_save"
+                />
+        </Preference>
 
         <Preference
             app:title="@string/profile_change_interests"
-            app:key="interests" />
+            app:key="interests">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.danrat.tomocom.InterestSelectorActivity"
+                android:targetPackage="com.danrat.tomocom"
+                android:data="@string/button_save"
+                />
+        </Preference>
 
         <Preference
             app:title="@string/profile_change_description"
-            app:key="description" />
+            app:key="description">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.danrat.tomocom.DescriptionActivity"
+                android:targetPackage="com.danrat.tomocom"
+                android:data="@string/button_save"
+                />
+        </Preference>
 
         <Preference
             app:title="@string/profile_delete"
-            app:key="delete" />
+            app:key="delete"
+            app:icon="@drawable/settings_delete"/>
 
     </PreferenceCategory>
 </PreferenceScreen>
