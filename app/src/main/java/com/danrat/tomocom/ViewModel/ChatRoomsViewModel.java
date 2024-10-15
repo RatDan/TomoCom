@@ -2,6 +2,7 @@ package com.danrat.tomocom.ViewModel;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,9 +10,13 @@ import androidx.lifecycle.ViewModel;
 import com.danrat.tomocom.Model.Chat;
 import com.danrat.tomocom.Model.Message;
 import com.danrat.tomocom.Model.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -26,7 +31,6 @@ public class ChatRoomsViewModel extends ViewModel {
     private final List<String> usernames = new ArrayList<>();
     private final List<String> uidList = new ArrayList<>();
     private final List<String> profilePicturesUrls = new ArrayList<>();
-    private final List<Chat> chatList = new ArrayList<>();
     private final List<Date> dateList = new ArrayList<>();
     private final String userID;
 
@@ -40,73 +44,72 @@ public class ChatRoomsViewModel extends ViewModel {
     public List<String> getUsernames() { return usernames; }
     public List<String> getUidList() { return uidList; }
     public List<String> getProfilePicturesUrls() { return profilePicturesUrls; }
-    public List<Chat> getChatList() { return chatList; }
 
-    public void fetchChatData(List<String> friends) {
-        if (friends.isEmpty()) return;
-
-        firestore.collection("chat_rooms")
-                .whereArrayContainsAny("members", friends)
-                .addSnapshotListener((snapshot, e) -> {
-                    if (e != null) {
-                        Log.w("Firestore", "Listen failed", e);
-                        return;
-                    }
-                    if (snapshot != null && !snapshot.isEmpty()) {
-                        List<Chat> chatRooms = new ArrayList<>();
-                        for (DocumentSnapshot document : snapshot.getDocuments()) {
-                            Chat chat = document.toObject(Chat.class);
-                            chatRooms.add(chat);
+    public void fetchChatData(List<String> friends, List<User> users) {
+        if (friends.isEmpty())
+            chatDataList.setValue(new ArrayList<>());
+        else {
+            firestore.collection("chat_rooms")
+                    .whereArrayContainsAny("members", friends)
+                    .addSnapshotListener((snapshot, e) -> {
+                        if (e != null) {
+                            Log.w("Firestore", "Listen failed", e);
+                            return;
                         }
-                        chatDataList.setValue(chatRooms);
-
-                        for (DocumentChange dc : snapshot.getDocumentChanges()) {
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    Log.d("TAG", "New Chat: " + dc.getDocument().toObject(Message.class));
-                                    break;
-                                case MODIFIED:
-                                    Log.d("TAG", "Modified Chat: " + dc.getDocument().toObject(Message.class));
-                                    break;
-                                case REMOVED:
-                                    Log.d("TAG", "Removed Chat: " + dc.getDocument().toObject(Message.class));
-                                    break;
+                        if (snapshot != null && !snapshot.isEmpty()) {
+                            List<Chat> chatRooms = new ArrayList<>();
+                            for (DocumentSnapshot document : snapshot.getDocuments()) {
+                                Chat chat = document.toObject(Chat.class);
+                                chatRooms.add(chat);
                             }
-                        }
-                    } else {
-                        chatDataList.setValue(new ArrayList<>());
-                    }
-                });
-    }
 
-    public void prepareChatData(List<Chat> chats, List<User> users) {
-        chatList.clear();
-        usernames.clear();
-        uidList.clear();
-        profilePicturesUrls.clear();
-        dateList.clear();
+                            usernames.clear();
+                            profilePicturesUrls.clear();
+                            uidList.clear();
+                            dateList.clear();
 
-        for (Chat chat : chats) {
-            List<String> tempMembers = new ArrayList<>(chat.getMembers());
-            if (tempMembers.contains(userID)) {
-                tempMembers.remove(userID);
-                for (User user : users) {
-                    if (Objects.equals(user.getUid(), tempMembers.get(0))) {
-                        chatList.add(chat);
-                        usernames.add(user.getUsername());
-                        profilePicturesUrls.add(user.getProfileImageUrl());
-                        uidList.add(tempMembers.get(0));
-                        if (chat.getMessages().isEmpty()) {
-                            dateList.add(new Date());
+                            for (Chat chat : chatRooms) {
+                                List<String> tempMembers = new ArrayList<>(chat.getMembers());
+                                if (tempMembers.contains(userID)) {
+                                    tempMembers.remove(userID);
+                                    for (User user : users) {
+                                        if (Objects.equals(user.getUid(), tempMembers.get(0))) {
+                                            usernames.add(user.getUsername());
+                                            profilePicturesUrls.add(user.getProfileImageUrl());
+                                            uidList.add(tempMembers.get(0));
+                                            if (chat.getMessages().isEmpty()) {
+                                                dateList.add(new Date());
+                                            } else {
+                                                dateList.add(chat.getLastMessage().getCreatedAt());
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            sortChatsByDate(chatRooms, dateList, usernames, uidList, profilePicturesUrls);
+
+                            chatDataList.setValue(chatRooms);
+
+                            /* for (DocumentChange dc : snapshot.getDocumentChanges()) {
+                                switch (dc.getType()) {
+                                    case ADDED:
+                                        Log.d("TAG", "New Chat: " + dc.getDocument().toObject(Message.class));
+                                        break;
+                                    case MODIFIED:
+                                        Log.d("TAG", "Modified Chat: " + dc.getDocument().toObject(Message.class));
+                                        break;
+                                    case REMOVED:
+                                        Log.d("TAG", "Removed Chat: " + dc.getDocument().toObject(Message.class));
+                                        break;
+                                }
+                            } */
+
                         } else {
-                            dateList.add(chat.getLastMessage().getCreatedAt());
+                            chatDataList.setValue(new ArrayList<>());
                         }
-                        break;
-                    }
-                }
-            }
+                    });
         }
-        sortChatsByDate(chatList,dateList,usernames,uidList,profilePicturesUrls);
     }
 
     private void sortChatsByDate(List<Chat> chats, List<Date> dates, List<String> usernames, List<String> uidList, List<String> profilePicturesUrls) {
@@ -147,8 +150,59 @@ public class ChatRoomsViewModel extends ViewModel {
         profilePicturesUrls.addAll(sortedProfilePicturesUrls);
     }
 
-    public void onRemoveFriend() {
+    public void removeFriend(String uid, String cid) {
+        DocumentReference docRef = firestore.collection("users").document(userID);
 
+        docRef.update("friends", FieldValue.arrayRemove(uid))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firestore", "User " + uid + "removed from friends.");
+                        removeChat(cid);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error on removing friend: ", e);
+                    }
+                });
+    }
+
+    public void removeAndBlockFriend(String uid, String cid) {
+        DocumentReference docRef = firestore.collection("users").document(userID);
+        removeFriend(uid, cid);
+        docRef.update("skipped", FieldValue.arrayUnion(uid))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firestore", "User " + uid + "added to blocked.");
+                        removeChat(cid);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error adding to blocked: ", e);
+                    }
+                });
+    }
+
+    public void removeChat (String cid) {
+        DocumentReference docRef = firestore.collection("chat_rooms").document(cid);
+        docRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firestore", "Chat room" + cid + " removed.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error removing chat room: ", e);
+                    }
+                });
     }
 
 }

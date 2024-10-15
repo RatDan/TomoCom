@@ -1,4 +1,4 @@
-package com.danrat.tomocom;
+package com.danrat.tomocom.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.ResetPasswordViewModel;
 
 public class ResetPasswordActivity extends AppCompatActivity {

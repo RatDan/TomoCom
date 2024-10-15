@@ -7,9 +7,4 @@
 
     <style name="Theme.TomoComm" parent="Base.Theme.TomoComm" />
 
-    <style name="ProfileDialogFragmentStyle" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.7</item>
-    </style>
 </resources>

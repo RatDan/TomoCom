@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -66,8 +67,10 @@ public class UserListViewModel extends ViewModel {
 
     public LiveData<String> getToastMessage() { return toastMessage; }
 
-    public void fetchUsersData() {
-        fireStore.collection("users").addSnapshotListener((snapshot, e) -> {
+    public void fetchUsersData(int minMatch, int minAge) {
+        fireStore.collection("users")
+                .limit(10)
+                .addSnapshotListener((snapshot, e) -> {
             if (e != null) {
                 Log.w("UserListViewModel", "Listen failed.", e);
                 return;
@@ -81,13 +84,13 @@ public class UserListViewModel extends ViewModel {
                         users.add(user);
                     }
                 }
-                filterAndFetchCurrentUser(users);
+                filterAndFetchCurrentUser(users, minMatch, minAge);
                 userList.setValue(users);
             }
         });
     }
 
-    private void filterAndFetchCurrentUser(List<User> users) {
+    private void filterAndFetchCurrentUser(List<User> users, int minMatch, int minAge) {
         DocumentReference currentUserRef = fireStore.collection("users").document(userID);
         currentUserRef.addSnapshotListener((documentSnapshot, e) -> {
             if (e != null) {
@@ -106,12 +109,26 @@ public class UserListViewModel extends ViewModel {
                     for (User user : users) {
                         if (!user.getUid().equals(userID) &&
                                 !friendList.contains(user.getUid()) &&
-                                !skippedList.contains(user.getUid())) {
+                                !skippedList.contains(user.getUid()) &&
+                                user.getAge() >= minAge) {
                             filteredUsers.add(user);
                         }
                     }
 
                     List<Integer> matchLevelList = calculateMatchLevelsForUsers(filteredUsers);
+                    Iterator<Integer> mIterator = matchLevelList.iterator();
+                    Iterator<User> uIterator = filteredUsers.iterator();
+
+                    while (mIterator.hasNext() && uIterator.hasNext()) {
+                        Integer matchLevel = mIterator.next();
+                        User filteredUser = uIterator.next();
+                        if (matchLevel < minMatch) {
+                            mIterator.remove();
+                            uIterator.remove();
+                        }
+
+                    }
+
                     sortUsersByMatchLevel(filteredUsers, matchLevelList);
 
                     filteredUserList.setValue(filteredUsers);

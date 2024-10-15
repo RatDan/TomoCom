@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileIV"
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:maxWidth="95dp"
+                    android:layout_above="@+id/addButton"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:contentDescription="@string/profile_image_desc"
+                    android:src="@drawable/nav_profile"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginBottom="7dp">
+                </de.hdodenhof.circleimageview.CircleImageView>
+
+                <TextView
+                    android:id="@+id/TV1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileIV"
+                    android:textStyle="bold"
+                    android:text="@string/placeholder_username">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/TV2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV1"
+                    android:layout_toEndOf="@id/profileIV"
+                    android:text="@string/card_age">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/TV3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV2"
+                    android:layout_toEndOf="@id/profileIV"
+                    android:text="@string/card_interests">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/TV4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV3"
+                    android:layout_toEndOf="@id/profileIV"
+                    android:text="@string/match_level">
+                </TextView>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@id/TV4"
+                    android:scaleY="2"
+                    android:layout_toEndOf="@id/profileIV"
+                    android:max="100"
+                    android:progress="0"
+                    android:indeterminateTintMode="src_atop"
+                    android:indeterminateTint="@color/light_purple"/>
+
+                <ImageButton
+                    android:id="@+id/addButton"
+                    android:contentDescription="@string/image_add"
+                    android:src="@drawable/card_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/progressBar"
+                    android:layout_toStartOf="@+id/centerV"
+                    android:background="@color/light_purple">
+
+                </ImageButton>
+
+                <View
+                    android:id="@+id/centerV"
+                    android:layout_width="7dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/progressBar"
+                    android:layout_centerHorizontal="true">
+                </View>
+
+                <ImageButton
+                    android:id="@+id/skipButton"
+                    android:contentDescription="@string/image_skip"
+                    android:src="@drawable/card_skip"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/progressBar"
+                    android:layout_toEndOf="@+id/centerV"
+                    android:background="@color/purple">
+
+                </ImageButton>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>

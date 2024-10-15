@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InterestSelectorActivity">
+    tools:context=".View.InterestSelectorActivity">
 
     <TextView
         android:id="@+id/chooseinterestsTV"
@@ -24,10 +24,11 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/chooseinterestsTV"
         android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:alignmentMode="alignMargins"
         android:columnCount="3"
-        android:columnOrderPreserved="false"
-        android:padding="16dp">
+        android:columnOrderPreserved="false">
 
         <CheckBox
             android:id="@+id/dancingCB"

@@ -5,18 +5,13 @@
 
     <PreferenceCategory app:title="@string/profile_title">
 
-        <EditTextPreference
-            app:key="username"
-            app:title="@string/profile_username"
-            app:defaultValue="User"
-            app:useSimpleSummaryProvider="true" />
-
         <Preference
             app:title="@string/profile_change_picture"
-            app:key="changeProfilePicture">
+            app:key="changeProfilePicture"
+            app:icon="@drawable/profile_picture">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetClass="com.danrat.tomocom.ProfilePictureActivity"
+                android:targetClass="com.danrat.tomocom.View.ProfilePictureActivity"
                 android:targetPackage="com.danrat.tomocom"
                 android:data="@string/button_save"
                 />
@@ -24,10 +19,11 @@
 
         <Preference
             app:title="@string/profile_change_interests"
-            app:key="interests">
+            app:key="interests"
+            app:icon="@drawable/profile_interests">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetClass="com.danrat.tomocom.InterestSelectorActivity"
+                android:targetClass="com.danrat.tomocom.View.InterestSelectorActivity"
                 android:targetPackage="com.danrat.tomocom"
                 android:data="@string/button_save"
                 />
@@ -35,19 +31,25 @@
 
         <Preference
             app:title="@string/profile_change_description"
-            app:key="description">
+            app:key="description"
+            app:icon="@drawable/profile_description">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetClass="com.danrat.tomocom.DescriptionActivity"
+                android:targetClass="com.danrat.tomocom.View.DescriptionActivity"
                 android:targetPackage="com.danrat.tomocom"
                 android:data="@string/button_save"
                 />
         </Preference>
 
         <Preference
+            app:title="@string/profile_clear"
+            app:key="clear"
+            app:icon="@drawable/profile_clear"/>
+
+        <Preference
             app:title="@string/profile_delete"
             app:key="delete"
-            app:icon="@drawable/settings_delete"/>
+            app:icon="@drawable/profile_delete"/>
 
     </PreferenceCategory>
 </PreferenceScreen>

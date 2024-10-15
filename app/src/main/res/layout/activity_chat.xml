@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity">
+    tools:context=".View.ChatActivity">
 
     <RelativeLayout
         android:id="@+id/topRV"
@@ -47,7 +47,9 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:padding="10dp">
+
 
         <EditText
             android:id="@+id/messageET"

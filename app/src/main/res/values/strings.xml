@@ -21,6 +21,7 @@
     <string name="email_hint">Twój adres Email</string>
     <string name="description_hint">Napisz coś o sobie...</string>
     <string name="text_remind_password">Nie pamiętam hasła</string>
+    <string name="text_about">Aplikacja napisana przez Daniela Ratkowskiego w ramach pracy inżynierskiej: <b>\"Projekt i implementacja aplikacji do poznawania ludzi z podobnymi zainteresowaniami dla systemu Android\"</b>  </string>
 
     <!--BUTTONS-->
     <string name="button_login">Zaloguj się</string>
@@ -83,11 +84,12 @@
     <string name="settings_about">O nas</string>
     <string name="settings_mode">Tryb ciemny</string>
     <string name="settings_signature">Twoja sygnatura</string>
-    <string name="settings_reply">Domyślny tryb odpowiedzi</string>
+    <string name="settings_match">Minimalny poziom dopasowania</string>
     <string name="settings_push">Powiadomienia Push</string>
     <string name="settings_sound">Dźwięki powiadomień</string>
     <string name="settings_skip_summary">Pomija użytkownika po wyjściu z profilu</string>
     <string name="settings_skip">Pomiń użytkownika</string>
+    <string name="settings_age">Minimalny wiek dopasowanych użytkowników</string>
     <string name="settings_logout">Wyloguj</string>
 
     <!--PROFILE PREFERENCES -->
@@ -100,7 +102,7 @@
 
     <!--MORE MENU -->
     <string name="menu_remove">Usuń znajomego</string>
-    <string name="menu_block">Usuń i zablokuj znajomego</string>
+    <string name="menu_remove_skip">Usuń i pomiń znajomego</string>
 
     <!--CHAT-->
     <string name="chat_enter_message">Wpisz wiadomość</string>
@@ -118,6 +120,10 @@
     <string name="friends">Znajomi:</string>
     <string name="matched_people">Dopasowani ludzie:</string>
     <string name="profile_image_desc">Profile Image</string>
-
+    <string name="text_empty_recycler_find">Brak dobranych ludzi.\n Zmień ustawienia lub poczekaj na nowych użytkowników.</string>
+    <string name="text_empty_recycler_friends">Brak znajomych.\n Przejdź do zakładki <b>Szukaj ludzi</b> aby znaleźć nowych znajomych!</string>
+    <string name="searchicon">searchIcon</string>
+    <string name="friendsicon">friendsIcon</string>
+    <string name="profile_clear">Wyczyść listę pominiętych użytkowników.</string>
 
 </resources>

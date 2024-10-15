@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FriendsFragment">
+    tools:context=".View.FriendsFragment">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -17,6 +17,26 @@
                     android:layout_margin="10dp"
                     android:text="@string/friends"
                     android:textSize="25sp"/>
+
+                <ImageView
+                    android:id="@+id/friendsIconIV"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:contentDescription="@string/friendsicon"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true"
+                    android:layout_above="@+id/emptyRecyclerTV"
+                    android:background="@drawable/friends_icon"/>
+
+                <TextView
+                    android:id="@+id/emptyRecyclerTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_empty_recycler_friends"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:textSize="18sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friendsRV"

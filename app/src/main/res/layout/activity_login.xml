@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".View.LoginActivity">
 
     <TextView
         android:id="@+id/emailTV"
@@ -102,12 +102,9 @@
         android:layout_marginEnd="10dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@android:color/transparent"
+        android:backgroundTint="@color/purple_mode"
         android:text="@string/button_signUp"
-        android:textColor="@color/black"
-        app:cornerRadius="5dp"
-        app:strokeColor="@color/black"
-        app:strokeWidth="1dp" />
+        app:cornerRadius="5dp" />
 
 
 

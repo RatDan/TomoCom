@@ -1,4 +1,4 @@
-package com.danrat.tomocom;
+package com.danrat.tomocom.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.danrat.tomocom.Model.User;
+import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.SignUpViewModel;
 
 public class SignupActivity extends AppCompatActivity {

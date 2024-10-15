@@ -27,7 +27,7 @@ import java.util.List;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
 
-    private OnMenuItemClickListener menuItemClickListener;
+    private final OnMenuItemClickListener menuItemClickListener;
     private List<Chat> chatList;
     private List<String> usernameList;
     private List<String> uidList;
@@ -47,8 +47,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     }
 
     public interface OnMenuItemClickListener {
-        void onRemoveFriend();
-        void onRemoveAndBlockFriend();
+        void onRemoveFriend(String uid, String cid);
+        void onRemoveAndBlockFriend(String uid, String cid);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -98,10 +98,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.remove_friend:
-                                menuItemClickListener.onRemoveFriend();
+                                menuItemClickListener.onRemoveFriend(uid, chat.getCid());
                                 return true;
                             case R.id.remove_and_block_friend:
-                                menuItemClickListener.onRemoveAndBlockFriend();
+                                menuItemClickListener.onRemoveAndBlockFriend(uid, chat.getCid());
                                 return true;
                             default:
                                 return false;

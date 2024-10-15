@@ -1,4 +1,4 @@
-package com.danrat.tomocom;
+package com.danrat.tomocom.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,26 +8,28 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.danrat.tomocom.Adapter.FriendListAdapter;
-import com.danrat.tomocom.Adapter.UserListAdapter;
-import com.danrat.tomocom.Model.Chat;
+import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.ChatRoomsViewModel;
 import com.danrat.tomocom.Model.Message;
 
 import com.danrat.tomocom.ViewModel.UserListViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsFragment extends Fragment implements FriendListAdapter.OnMenuItemClickListener {
 
     private RecyclerView recyclerView;
     private FriendListAdapter adapter;
+    private TextView emptyRecyclerTextView;
+    private ImageView friendsIconImageView;
+    private ChatRoomsViewModel chatRoomsViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,25 +37,26 @@ public class FriendsFragment extends Fragment implements FriendListAdapter.OnMen
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
         recyclerView = view.findViewById(R.id.friendsRV);
+        emptyRecyclerTextView = view.findViewById(R.id.emptyRecyclerTV);
+        friendsIconImageView = view.findViewById(R.id.friendsIconIV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         UserListViewModel userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
-        ChatRoomsViewModel chatRoomsViewModel = new ViewModelProvider(requireActivity()).get(ChatRoomsViewModel.class);
+        chatRoomsViewModel = new ViewModelProvider(requireActivity()).get(ChatRoomsViewModel.class);
 
         userListViewModel.getUserList().observe(getViewLifecycleOwner(), users -> {
             if (users != null) {
                 userListViewModel.filterFriends(users);
-                chatRoomsViewModel.fetchChatData(userListViewModel.getFriendsUids());
+                chatRoomsViewModel.fetchChatData(userListViewModel.getFriendsUids(), userListViewModel.getFriends());
             }
         });
 
         chatRoomsViewModel.getChatRooms().observe(getViewLifecycleOwner(), chats -> {
             if (chats != null) {
-                chatRoomsViewModel.prepareChatData(chats, userListViewModel.getFriends());
 
                 if (adapter == null) {
                     adapter = new FriendListAdapter(
-                            chatRoomsViewModel.getChatList(),
+                            chats,
                             chatRoomsViewModel.getUsernames(),
                             chatRoomsViewModel.getUidList(),
                             chatRoomsViewModel.getProfilePicturesUrls(),
@@ -74,19 +77,35 @@ public class FriendsFragment extends Fragment implements FriendListAdapter.OnMen
                     });
                 } else {
                     adapter.updateData(
-                            chatRoomsViewModel.getChatList(),
+                            chats,
                             chatRoomsViewModel.getUsernames(),
                             chatRoomsViewModel.getUidList(),
                             chatRoomsViewModel.getProfilePicturesUrls()
                     );
                 }
             }
+
+            checkIfEmpty();
         });
 
-        public void onRemoveFriend() {
-            chatRoomsViewModel.
-        }
-
         return view;
+    }
+
+    @Override
+    public void onRemoveFriend (String uid, String cid) { chatRoomsViewModel.removeFriend(uid, cid); }
+
+    @Override
+    public void onRemoveAndBlockFriend (String uid, String cid) { chatRoomsViewModel.removeAndBlockFriend(uid, cid); }
+
+    private void checkIfEmpty() {
+        if (adapter.getItemCount() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            emptyRecyclerTextView.setVisibility(View.VISIBLE);
+            friendsIconImageView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyRecyclerTextView.setVisibility(View.GONE);
+            friendsIconImageView.setVisibility(View.GONE);
+        }
     }
 }

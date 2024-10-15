@@ -1,4 +1,4 @@
-package com.danrat.tomocom;
+package com.danrat.tomocom.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.danrat.tomocom.Adapter.MessageListAdapter;
+import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.CurrentChatViewModel;
 import com.danrat.tomocom.Model.Message;
 import com.danrat.tomocom.ViewModel.SendMessageViewModel;

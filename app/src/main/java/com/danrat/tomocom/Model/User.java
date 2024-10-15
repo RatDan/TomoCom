@@ -9,8 +9,8 @@ import java.util.Set;
 
 public class User {
     private String uid="";
-    private final String username;
-    private final int age;
+    private String username="";
+    private int age=0;
     private String description="";
     private String profileImageUrl;
 
@@ -18,16 +18,19 @@ public class User {
     private List<String> friends = Collections.emptyList();
     private List<String> skipped = Collections.emptyList();
 
-    public User (String username, int age)
-    {
+    public User (String username, int age) {
         this.username = username;
         this.age = age;
     }
 
-    public User ()
-    {
+    public User () {
         this.username="";
         this.age=0;
+    }
+
+    public User (String uid, List<String> friends) {
+        this.uid = uid;
+        this.friends = friends;
     }
 
     public void setUid (String uid) {
@@ -55,6 +58,7 @@ public class User {
         for (Interests interest : interests) {
             temp.append(interest.toString()).append(", ");
         }
+        temp.deleteCharAt(temp.length()-2);
         return temp.toString();
     }
 

@@ -4,34 +4,26 @@
     <PreferenceCategory app:title="@string/settings_title_general">
 
         <SwitchPreferenceCompat
-            app:key="mode"
-            app:title="@string/settings_mode" />
-
-        <SwitchPreferenceCompat
-            app:key="skip"
-            app:summary="@string/settings_skip_summary"
-            app:title="@string/settings_skip" />
+            app:key="dark_mode"
+            app:title="@string/settings_mode"
+            app:icon="@drawable/settings_mode"/>
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/settings_reply"
-            app:useSimpleSummaryProvider="true" />
+            app:defaultValue="40"
+            app:entries="@array/match_entries"
+            app:entryValues="@array/match_values"
+            app:key="match"
+            app:title="@string/settings_match"
+            app:useSimpleSummaryProvider="true"
+            app:icon="@drawable/settings_level"/>
 
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/settings_title_notifications">
-
-        <SwitchPreferenceCompat
-            app:key="push"
-            app:title="@string/settings_push" />
-
-        <SwitchPreferenceCompat
-            app:dependency="push"
-            app:key="sound"
-            app:title="@string/settings_sound" />
+        <EditTextPreference
+            app:key="age"
+            app:defaultValue="13"
+            app:title="@string/settings_age"
+            app:useSimpleSummaryProvider="true"
+            app:icon="@drawable/settings_age"
+            />
 
     </PreferenceCategory>
 
