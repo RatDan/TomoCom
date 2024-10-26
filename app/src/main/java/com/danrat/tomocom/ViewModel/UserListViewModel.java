@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.danrat.tomocom.Model.Chat;
-import com.danrat.tomocom.Model.Interests;
 import com.danrat.tomocom.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -35,7 +34,8 @@ public class UserListViewModel extends ViewModel {
     private final MutableLiveData<List<Integer>> matchLevels = new MutableLiveData<>();
     private final MutableLiveData<List<String>> profileImageUrls = new MutableLiveData<>();
     private final MutableLiveData<String> toastMessage = new MutableLiveData<>();
-    private List<Interests> currentUserInterests = new ArrayList<>();
+    private List<String> currentUserInterests = new ArrayList<>();
+    private List<String> currentUserSubInterests = new ArrayList<>();
     private final List<User> friends = new ArrayList<>();
     private final List<String> friendsUids = new ArrayList<>();
     private final String userID;
@@ -69,7 +69,7 @@ public class UserListViewModel extends ViewModel {
 
     public void fetchUsersData(int minMatch, int minAge) {
         fireStore.collection("users")
-                .limit(10)
+                //.whereGreaterThanOrEqualTo("age",minAge)
                 .addSnapshotListener((snapshot, e) -> {
             if (e != null) {
                 Log.w("UserListViewModel", "Listen failed.", e);
@@ -90,6 +90,50 @@ public class UserListViewModel extends ViewModel {
         });
     }
 
+    public void fetchFriendsData() {
+        fireStore.collection("users")
+                .whereArrayContains("friends", userID)
+                .addSnapshotListener((snapshot, e) -> {
+                    if (e != null) {
+                        Log.w("UserListViewModel", "Listen failed.", e);
+                        return;
+                    }
+
+                    if (snapshot != null && !snapshot.isEmpty()) {
+                        List<User> users = new ArrayList<>();
+                        for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                            User user = doc.toObject(User.class);
+                            if (user != null) {
+                                users.add(user);
+                            }
+                        }
+                        userList.setValue(users);
+                    }
+                });
+    }
+
+    public void fetchRequestsData(int minMatch) {
+        fireStore.collection("users")
+                .whereArrayContains("friends", userID)
+                .addSnapshotListener((snapshot, e) -> {
+                    if (e != null) {
+                        Log.w("UserListViewModel", "Listen failed.", e);
+                        return;
+                    }
+
+                    if (snapshot != null && !snapshot.isEmpty()) {
+                        List<User> users = new ArrayList<>();
+                        for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                            User user = doc.toObject(User.class);
+                            if (user != null) {
+                                users.add(user);
+                            }
+                        }
+                        userList.setValue(users);
+                    }
+                });
+    }
+
     private void filterAndFetchCurrentUser(List<User> users, int minMatch, int minAge) {
         DocumentReference currentUserRef = fireStore.collection("users").document(userID);
         currentUserRef.addSnapshotListener((documentSnapshot, e) -> {
@@ -102,6 +146,7 @@ public class UserListViewModel extends ViewModel {
                 User currentUser = documentSnapshot.toObject(User.class);
                 if (currentUser != null) {
                     currentUserInterests = currentUser.getInterests() != null ? currentUser.getInterests() : new ArrayList<>();
+                    currentUserSubInterests = currentUser.getSubInterests() != null ? currentUser.getSubInterests() : new ArrayList<>();
                     friendList = currentUser.getFriends() != null ? currentUser.getFriends() : new ArrayList<>();
                     skippedList = currentUser.getSkipped() != null ? currentUser.getSkipped() : new ArrayList<>();
 
@@ -140,22 +185,68 @@ public class UserListViewModel extends ViewModel {
         });
     }
 
+    private List<User> filterUsers(List<User> users, User currentUser) {
+        List<User> filteredUsers = new ArrayList<>();
+
+        List<String> currentUserFriends = currentUser.getFriends() != null ? currentUser.getFriends() : new ArrayList<>();
+        List<String> currentUserSkipped = currentUser.getSkipped() != null ? currentUser.getSkipped() : new ArrayList<>();
+
+        for (User user : users) {
+            if (!user.getUid().equals(currentUser.getUid()) &&
+                    !currentUserFriends.contains(user.getUid()) &&
+                    !currentUserSkipped.contains(user.getUid())) {
+
+                if (user.getFriends() != null && user.getFriends().contains(currentUser.getUid())) {
+                    filteredUsers.add(user);
+                }
+            }
+        }
+        return filteredUsers;
+    }
+
+    private List<User> filterUserRequests(List<User> users, User currentUser) {
+        List<User> filteredUsers = new ArrayList<>();
+
+        List<String> currentUserFriends = currentUser.getFriends() != null ? currentUser.getFriends() : new ArrayList<>();
+        List<String> currentUserSkipped = currentUser.getSkipped() != null ? currentUser.getSkipped() : new ArrayList<>();
+
+        for (User user : users) {
+            if (!user.getUid().equals(currentUser.getUid()) &&
+                    !currentUserFriends.contains(user.getUid()) &&
+                    !currentUserSkipped.contains(user.getUid()) &&
+                    user.getFriends() != null &&
+                    user.getFriends().contains(userID)) {
+                    filteredUsers.add(user);
+            }
+        }
+        return filteredUsers;
+    }
+
     private List<Integer> calculateMatchLevelsForUsers(List<User> users) {
         List<Integer> calculatedMatchLevels = new ArrayList<>();
         for (User user : users) {
-            calculatedMatchLevels.add(calculateMatchLevel(currentUserInterests, user.getInterests()));
+            calculatedMatchLevels.add(calculateMatchLevel(currentUserInterests, currentUserSubInterests, user.getInterests(), user.getSubInterests()));
         }
         return calculatedMatchLevels;
     }
 
-    private int calculateMatchLevel(List<Interests> currentUserInterests, List<Interests> otherUserInterests) {
+    private int calculateMatchLevel(List<String> currentUserInterests, List<String> currentUserSubInterests, List<String> otherUserInterests, List<String> otherUserSubInterests) {
         int matchLevel = 0;
-        Set<Interests> matchedInterestsSet = new HashSet<>(otherUserInterests);
-        for (Interests interest : currentUserInterests) {
+
+        Set<String> matchedInterestsSet = new HashSet<>(otherUserInterests);
+        for (String interest : currentUserInterests) {
             if (matchedInterestsSet.contains(interest)) {
-                matchLevel += 20;
+                matchLevel += 10;
             }
         }
+
+        Set<String> matchedSubInterestsSet = new HashSet<>(otherUserSubInterests);
+        for (String interest : currentUserSubInterests) {
+            if (matchedSubInterestsSet.contains(interest)) {
+                matchLevel += 10;
+            }
+        }
+
         return matchLevel;
     }
 

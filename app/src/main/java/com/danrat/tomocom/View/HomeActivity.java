@@ -34,6 +34,10 @@ public class HomeActivity extends AppCompatActivity
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_TomoComm);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDarkModeEnabled = preferences.getBoolean("dark_mode", false);
+        AppCompatDelegate.setDefaultNightMode(isDarkModeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -58,10 +62,6 @@ public class HomeActivity extends AppCompatActivity
             FragmentUtils.replaceFragment(fragmentManager, findFragment);
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isDarkModeEnabled = preferences.getBoolean("dark_mode", false);
-        AppCompatDelegate.setDefaultNightMode(isDarkModeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         homeViewModel.checkUserData();
@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity
         homeViewModel.isProfilePictureMissing().observe(this, isMissing -> {
             if (isMissing) {
                 Intent intent = new Intent(HomeActivity.this, ProfilePictureActivity.class);
-                intent.putExtra("ButtonSave", "Zapisz");
+                intent.putExtra("mode", "missing");
                 startActivity(intent);
                 finish();
             }
@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity
         homeViewModel.areInterestsMissing().observe(this, areMissing -> {
             if (areMissing) {
                 Intent intent = new Intent(HomeActivity.this, InterestSelectorActivity.class);
-                intent.putExtra("ButtonSave", "Zapisz");
+                intent.putExtra("mode", "missing");
                 startActivity(intent);
                 finish();
             }

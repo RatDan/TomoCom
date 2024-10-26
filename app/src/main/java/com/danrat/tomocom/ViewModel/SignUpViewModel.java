@@ -56,6 +56,12 @@ public class SignUpViewModel extends ViewModel {
             return;
         }
 
+        if (newUser.getAge() > 120) {
+            errorMessage.setValue("Podaj poprawny wiek!");
+            return;
+        }
+
+
         if (!validatePassword(password)) {
             return;
         }
@@ -66,9 +72,11 @@ public class SignUpViewModel extends ViewModel {
                     loading.setValue(false);
                     if (task.isSuccessful()) {
                         FirebaseUser currentUser = auth.getCurrentUser();
-                        String userID = currentUser.getUid();
-                        newUser.setUid(userID);
-                        saveUserInFirestore(newUser);
+                        if (currentUser != null) {
+                            String userID = currentUser.getUid();
+                            newUser.setUid(userID);
+                            saveUserInFirestore(newUser);
+                        }
                     } else {
                         errorMessage.setValue("Error: " + Objects.requireNonNull(task.getException()).getMessage());
                     }
@@ -78,12 +86,8 @@ public class SignUpViewModel extends ViewModel {
     private void saveUserInFirestore(User newUser) {
         fireStore.collection("users").document(newUser.getUid())
                 .set(newUser)
-                .addOnSuccessListener(unused -> {
-                    accountCreated.setValue(true);
-                })
-                .addOnFailureListener(e -> {
-                    errorMessage.setValue("Failed to save user: " + e.getMessage());
-                });
+                .addOnSuccessListener(unused -> accountCreated.setValue(true))
+                .addOnFailureListener(e -> errorMessage.setValue("Failed to save user: " + e.getMessage()));
     }
 
     private boolean validatePassword(String password) {

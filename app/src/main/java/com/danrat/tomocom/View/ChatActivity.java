@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +17,7 @@ import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.CurrentChatViewModel;
 import com.danrat.tomocom.Model.Message;
 import com.danrat.tomocom.ViewModel.SendMessageViewModel;
+import com.google.common.base.Strings;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,12 +29,14 @@ public class ChatActivity extends AppCompatActivity {
     private static final String UID_ARG = "uid";
     private static final String CID_ARG = "cid";
     private static final String PROFILEPICTUREURL_ARG = "profilePictureUrl";
+    private static final String DESCRIPTION_ARG = "description";
 
     private List<Message> messages;
     private String username;
     private String uid;
     private String cid;
     private String profilePictureUrl;
+    private String description;
     private RecyclerView recyclerView;
     private MessageListAdapter adapter;
     private EditText messageET;
@@ -61,16 +62,20 @@ public class ChatActivity extends AppCompatActivity {
             username = getIntent().getStringExtra(USERNAME_ARG);
             uid = getIntent().getStringExtra(UID_ARG);
             cid = getIntent().getStringExtra(CID_ARG);
+            description = getIntent().getStringExtra(DESCRIPTION_ARG);
             profilePictureUrl = getIntent().getStringExtra(PROFILEPICTUREURL_ARG);
         }
 
-        TextView textView = findViewById(R.id.usernameTV);
-        textView.setText(username);
+        TextView usernameTextView = findViewById(R.id.usernameTV);
+        usernameTextView.setText(username);
+
+        TextView descriptionTextView = findViewById(R.id.descriptionTV);
+        descriptionTextView.setText(description);
 
         CurrentChatViewModel currentChatViewModel = new ViewModelProvider(this).get(CurrentChatViewModel.class);
 
         currentChatViewModel.getImageUrl().observe(this, url -> {
-            if (url != null) {
+            if (!Strings.isNullOrEmpty(url)) {
                 Picasso.get()
                         .load(url)
                         .placeholder(R.drawable.nav_profile)
@@ -99,9 +104,8 @@ public class ChatActivity extends AppCompatActivity {
         currentChatViewModel.fetchChatData(cid);
 
         SendMessageViewModel sendMessageViewModel = new ViewModelProvider(this).get(SendMessageViewModel.class);
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        sendMessageButton.setOnClickListener(v -> {
+            if (!messageET.getText().toString().isEmpty() || messageET.getText() == null) {
                 String message = messageET.getText().toString().trim();
                 sendMessageViewModel.sendMessage(message, uid, cid);
                 messageET.getText().clear();
@@ -109,20 +113,17 @@ public class ChatActivity extends AppCompatActivity {
                     recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
             }
         });
-        messageET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    String message = messageET.getText().toString().trim();
-                    sendMessageViewModel.sendMessage(message, uid, cid);
-                    messageET.getText().clear();
-                    if (!messages.isEmpty())
-                        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-                    handled = true;
-                }
-                return handled;
+        messageET.setOnEditorActionListener((v, actionId, event) -> {
+            boolean handled = false;
+            if (actionId == EditorInfo.IME_ACTION_SEND && (!messageET.getText().toString().isEmpty() || messageET.getText() == null)) {
+                String message = messageET.getText().toString().trim();
+                sendMessageViewModel.sendMessage(message, uid, cid);
+                messageET.getText().clear();
+                if (!messages.isEmpty())
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                handled = true;
             }
+            return handled;
         });
     }
 }

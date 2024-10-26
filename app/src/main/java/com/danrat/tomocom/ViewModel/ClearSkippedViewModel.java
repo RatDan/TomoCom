@@ -1,12 +1,9 @@
 package com.danrat.tomocom.ViewModel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -32,17 +29,7 @@ public class ClearSkippedViewModel extends ViewModel {
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userID);
 
         docRef.update("skipped", FieldValue.delete())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        clearSuccess.setValue(true);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        clearSuccess.setValue(false);
-                    }
-                });
+                .addOnSuccessListener(unused -> clearSuccess.setValue(true))
+                .addOnFailureListener(e -> clearSuccess.setValue(false));
     }
 }

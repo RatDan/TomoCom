@@ -22,10 +22,6 @@ public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-    public LiveData<User> getUserLiveData() {
-        return userLiveData;
-    }
-
     public LiveData<Boolean> isProfilePictureMissing() {
         return isProfilePictureMissing;
     }

@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.danrat.tomocom.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,9 +14,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,6 +24,7 @@ public class ProfilePictureViewModel extends ViewModel {
 
     private final MutableLiveData<String> toastMessage = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isImageUploaded = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
     private final FirebaseFirestore fireStore;
     private final FirebaseStorage firebaseStorage;
     private final String userID;
@@ -52,6 +50,10 @@ public class ProfilePictureViewModel extends ViewModel {
         return isImageUploaded;
     }
 
+    public LiveData<Boolean> isLoading() {
+        return loading;
+    }
+
     public void loadProfileImage() {
         DocumentReference documentReference = fireStore.collection("users").document(userID);
         documentReference.get().addOnSuccessListener(documentSnapshot -> {
@@ -66,6 +68,7 @@ public class ProfilePictureViewModel extends ViewModel {
 
     public void uploadImageToFirebase(Uri imageUri) {
         if (imageUri != null) {
+            loading.setValue(true);
             StorageReference storageReference = firebaseStorage.getReference("profile_images/" + userID);
 
             if (currentImageUrl != null) {
@@ -91,6 +94,7 @@ public class ProfilePictureViewModel extends ViewModel {
         fireStore.collection("users").document(userId)
                 .set(userMap, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
+                    loading.setValue(false);
                     isImageUploaded.setValue(true);
                     currentImageUrl = imageUrl;
                     toastMessage.setValue("Zdjęcie profilowe zapisane pomyślnie");

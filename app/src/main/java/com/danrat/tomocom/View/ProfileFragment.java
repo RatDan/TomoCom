@@ -9,7 +9,6 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
@@ -44,6 +43,7 @@ public class ProfileFragment extends PreferenceFragmentCompat {
             if (success) {
                 Toast.makeText(getContext(), "Konto zostało usunięte.", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(),MainActivity.class));
+                requireActivity().finish();
             } else {
                 Toast.makeText(getContext(), "Błąd podczas usuwania konta.", Toast.LENGTH_SHORT).show();
             }
@@ -65,23 +65,17 @@ public class ProfileFragment extends PreferenceFragmentCompat {
 
         Preference deletePreference = findPreference("delete");
         if (deletePreference != null) {
-            deletePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(@NonNull Preference preference) {
-                    showReauthDialog();
-                    return true;
-                }
+            deletePreference.setOnPreferenceClickListener(preference -> {
+                showReauthDialog();
+                return true;
             });
         }
 
         Preference clearPreference = findPreference("clear");
         if (clearPreference != null) {
-            clearPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(@NonNull Preference preference) {
-                    clearSkippedViewModel.clearSkipped();
-                    return false;
-                }
+            clearPreference.setOnPreferenceClickListener(preference -> {
+                clearSkippedViewModel.clearSkipped();
+                return false;
             });
             Drawable icon = clearPreference.getIcon();
             if (icon != null) {
@@ -91,6 +85,12 @@ public class ProfileFragment extends PreferenceFragmentCompat {
 
         Preference profilePreference = findPreference("changeProfilePicture");
         if (profilePreference != null) {
+            profilePreference.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(requireContext(), ProfilePictureActivity.class);
+                intent.putExtra("mode", "update");
+                startActivity(intent);
+                return false;
+            });
             Drawable icon = profilePreference.getIcon();
             if (icon != null) {
                 icon.setTint(iconColor);
@@ -99,6 +99,12 @@ public class ProfileFragment extends PreferenceFragmentCompat {
 
         Preference interestPreference = findPreference("interests");
         if (interestPreference != null) {
+            interestPreference.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(requireContext(), InterestSelectorActivity.class);
+                intent.putExtra("mode", "update");
+                startActivity(intent);
+                return false;
+            });
             Drawable icon = interestPreference.getIcon();
             if (icon != null) {
                 icon.setTint(iconColor);
@@ -107,12 +113,17 @@ public class ProfileFragment extends PreferenceFragmentCompat {
 
         Preference descriptionPreference = findPreference("description");
         if (descriptionPreference != null) {
+            descriptionPreference.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(requireContext(), DescriptionActivity.class);
+                intent.putExtra("mode", "update");
+                startActivity(intent);
+                return false;
+            });
             Drawable icon = descriptionPreference.getIcon();
             if (icon != null) {
                 icon.setTint(iconColor);
             }
         }
-
 
     }
 

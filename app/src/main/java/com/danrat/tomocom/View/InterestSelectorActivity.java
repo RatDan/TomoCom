@@ -7,19 +7,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.CheckedTextView;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.danrat.tomocom.Model.Interests;
+import com.danrat.tomocom.Adapter.InterestAdapter;
+import com.danrat.tomocom.Model.Interest;
 import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.InterestsViewModel;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class InterestSelectorActivity extends AppCompatActivity {
 
     private InterestsViewModel interestsViewModel;
+    String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,72 +32,54 @@ public class InterestSelectorActivity extends AppCompatActivity {
 
         interestsViewModel = new ViewModelProvider(this).get(InterestsViewModel.class);
         Button nextButton = findViewById(R.id.nextButton);
+        mode = getIntent().getStringExtra("mode");
+        if (mode != null)
+            nextButton.setText(R.string.button_save);
 
-        CheckBox dancingCB = findViewById(R.id.dancingCB);
-        CheckBox fashionCB = findViewById(R.id.fashionCB);
-        CheckBox showsCB = findViewById(R.id.showsCB);
-        CheckBox travellingCB = findViewById(R.id.travellingCB);
-        CheckBox artCB = findViewById(R.id.artCB);
-        CheckBox gamesCB = findViewById(R.id.gamesCB);
-        CheckBox sportCB = findViewById(R.id.sportCB);
-        CheckBox animalsCB = findViewById(R.id.animalsCB);
-        CheckBox cookingCB = findViewById(R.id.cookingCB);
-        CheckBox moviesCB = findViewById(R.id.moviesCB);
-        CheckBox animeCB = findViewById(R.id.animeCB);
-        CheckBox mangaCB = findViewById(R.id.mangaCB);
-        CheckBox musicCB = findViewById(R.id.musicCB);
-        CheckBox programmingCB = findViewById(R.id.programmingCB);
-        CheckBox natureCB = findViewById(R.id.natureCB);
-        CheckBox onlineGamesCB = findViewById(R.id.onlineGamesCB);
-        CheckBox gymCB = findViewById(R.id.gymCB);
-        CheckBox writingCB = findViewById(R.id.writingCB);
-        CheckBox fitnessCB = findViewById(R.id.fitnessCB);
-        CheckBox outdoorsCB = findViewById(R.id.outdoorsCB);
-        CheckBox concertsCB = findViewById(R.id.concertsCB);
-        CheckBox scienceCB = findViewById(R.id.scienceCB);
-        CheckBox booksCB = findViewById(R.id.booksCB);
-        CheckBox campingCB = findViewById(R.id.campingCB);
-        CheckBox boardGamesCB = findViewById(R.id.boardGamesCB);
-        CheckBox fishingCB = findViewById(R.id.fishingCB);
-        CheckBox hikingCB = findViewById(R.id.hikingCB);
-
-        List<CheckBox> checkBoxes = Arrays.asList(
-                dancingCB, fashionCB, showsCB, travellingCB, artCB, gamesCB, sportCB,
-                animalsCB, cookingCB, moviesCB, animeCB, mangaCB, musicCB, programmingCB,
-                natureCB, onlineGamesCB, gymCB, writingCB, fitnessCB, outdoorsCB,
-                concertsCB, scienceCB, booksCB, campingCB, boardGamesCB, fishingCB, hikingCB
+        List<Interest> interests = Arrays.asList(
+                new Interest("Taniec", Arrays.asList("Taniec współczesny", "Balet", "Hip-hop", "Salsa", "Bachata", "Breakdance", "Tango")),
+                new Interest("Moda", Arrays.asList("Moda uliczna", "Haute couture", "Moda ekologiczna", "Akcesoria", "Stylizacja włosów", "Stylizacja paznokci", "Projektowanie mody")),
+                new Interest("Przedstawienia", Arrays.asList("Teatr", "Musicale", "Kabaret", "Stand-up", "Przedstawienia cyrkowe", "Opera", "Balet")),
+                new Interest("Podróżowanie", Arrays.asList("Podróże przygodowe", "Turystyka kulturowa", "Turystyka kulinarna", "Turystyka sportowa", "Ekoturystyka", "Podróże z plecakiem", "Rejsy")),
+                new Interest("Sztuka", Arrays.asList("Malarstwo", "Rzeźba", "Fotografia artystyczna", "Rysunek", "Grafika cyfrowa", "Sztuka uliczna", "Tkanina artystyczna")),
+                new Interest("Gry", Arrays.asList("Fabularne", "RPG", "Mobilne", "Gacha", "Przygodowe", "Metroidvania", "Open-World", "Rytmiczne", "Turowe")),
+                new Interest("Sport", Arrays.asList("Piłka nożna", "Koszykówka", "Siatkówka", "Tenis", "Pływanie", "Bieganie", "Rower górski")),
+                new Interest("Zwierzęta", Arrays.asList("Psy", "Koty", "Akwarystyka", "Ptaki domowe", "Jeździectwo", "Terrarystyka", "Zwierzęta egzotyczne")),
+                new Interest("Gotowanie", Arrays.asList("Kuchnia włoska", "Kuchnia azjatycka", "Wypieki", "Kuchnia wegetariańska/wegańska", "Grillowanie", "Desery", "Kuchnia molekularna")),
+                new Interest("Filmy", Arrays.asList("Filmy akcji", "Filmy romantyczne", "Filmy science-fiction", "Filmy fantasy", "Dokumentalne", "Horrory", "Animacje")),
+                new Interest("Anime i Manga", Arrays.asList("Shōnen", "Shōjo", "Josei", "Seinen", "Mecha", "Isekai", "Slice of Life", "Ecchi", "Historyczne", "Fantasy", "Komedia")),
+                new Interest("Muzyka", Arrays.asList("Rock", "Jazz", "Muzyka klasyczna", "Hip-hop", "EDM", "Muzyka filmowa", "Pop")),
+                new Interest("Programowanie", Arrays.asList("Programowanie frontendowe", "Programowanie backendowe", "Programowanie mobilne", "Programowanie gier", "Sztuczna inteligencja")),
+                new Interest("Przyroda", Arrays.asList("Obserwowanie ptaków", "Ochrona środowiska", "Botanika", "Fotografia przyrodnicza", "Ogrodnictwo", "Parki narodowe", "Wspinaczka górska")),
+                new Interest("Gry Online", Arrays.asList("MMORPG", "MOBA", "FPS", "Gry strategiczne", "Gry survivalowe", "Battle royale", "Gry symulacyjne")),
+                new Interest("Siłownia", Arrays.asList("Trening siłowy", "Trening cardio", "CrossFit", "Trening funkcjonalny", "Powerlifting", "Kulturystyka", "Trening personalny")),
+                new Interest("Pisarstwo", Arrays.asList("Pisanie powieści", "Pisanie poezji", "Pisanie scenariuszy", "Pisanie artykułów", "Tworzenie blogów", "Ghostwriting", "Twórcze pisanie")),
+                new Interest("Fitness", Arrays.asList("Joga", "Pilates", "Zumba", "HIIT", "Stretching", "Aerobik", "Trening obwodowy")),
+                new Interest("Aktywność na zewnątrz", Arrays.asList("Bieganie", "Jazda na rowerze", "Kajakarstwo", "Wspinaczka", "Survival", "Paintball", "Obserwacja gwiazd")),
+                new Interest("Koncerty", Arrays.asList("Rock", "Jazz", "Muzyka klasyczna", "EDM", "Festiwale muzyczne", "Koncerty kameralne", "Muzyka akustyczna")),
+                new Interest("Nauka", Arrays.asList("Astronomia", "Fizyka", "Chemia", "Biologia", "Psychologia", "Inżynieria", "Informatyka")),
+                new Interest("Książki", Arrays.asList("Powieści fantastyczne", "Kryminały", "Powieści romantyczne", "Literatura faktu", "Literatura młodzieżowa", "Powieści historyczne", "Poezja")),
+                new Interest("Kemping", Arrays.asList("Kempingi rodzinne", "Biwakowanie survivalowe", "Kempingi w górach", "Kempingi nad jeziorem", "Glamping", "Kempingi w lasach", "Kempingi zimowe")),
+                new Interest("Gry planszowe", Arrays.asList("Gry strategiczne", "Gry kooperacyjne", "Gry przygodowe", "Gry rodzinne", "Gry karciane", "Gry logiczne", "Gry RPG")),
+                new Interest("Wędkarstwo", Arrays.asList("Wędkarstwo spinningowe", "Wędkarstwo muchowe", "Wędkarstwo karpiowe", "Wędkarstwo morskie", "Wędkarstwo podlodowe", "Wędkarstwo sportowe", "Łowienie na spławik")),
+                new Interest("Hiking", Arrays.asList("Wędrówki górskie", "Wędrówki leśne", "Trekking", "Wędrówki po wybrzeżu", "Wędrówki długodystansowe", "Nordic walking", "Wędrówki zimowe"))
         );
 
-        List<Interests> interestsList = Arrays.asList(
-                Interests.Dancing, Interests.Fashion, Interests.Shows, Interests.Traveling, Interests.Art,
-                Interests.Games, Interests.Sport, Interests.Animals, Interests.Cooking, Interests.Movies,
-                Interests.Anime, Interests.Manga, Interests.Music, Interests.Programming, Interests.Nature,
-                Interests.Online_Games, Interests.Gym, Interests.Writing, Interests.Fitness, Interests.Outside_Activities,
-                Interests.Concerts, Interests.Science, Interests.Books, Interests.Camping, Interests.Board_Games,
-                Interests.Fishing, Interests.Hiking
-        );
+        ExpandableListView expandableListView = findViewById(R.id.expandableInterestList);
+        InterestAdapter adapter = new InterestAdapter(this, interests);
+        expandableListView.setAdapter(adapter);
 
-        interestsViewModel.canSelectMoreInterests().observe(this, canSelectMore -> {
-            for (CheckBox checkBox : checkBoxes) {
-                if (!checkBox.isChecked()) {
-                    checkBox.setEnabled(canSelectMore);
-                }
-            }
+        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            String selectedCategory = interests.get(groupPosition).getCategory();
+            String selectedSubcategory = interests.get(groupPosition).getSubcategories().get(childPosition);
+            interestsViewModel.toggleInterest(selectedCategory, selectedSubcategory, ((CheckedTextView) v).isChecked());
+            return true;
         });
 
         interestsViewModel.isButtonEnabled().observe(this, nextButton::setEnabled);
 
-
-        for (int i = 0; i < checkBoxes.size(); i++) {
-            CheckBox checkBox = checkBoxes.get(i);
-            Interests interest = interestsList.get(i);
-
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> interestsViewModel.toggleInterest(interest, isChecked));
-        }
-
         nextButton.setOnClickListener(v -> {
-            List<Interests> selectedInterests = interestsViewModel.getSelectedInterests().getValue();
-
+            Map<String, String> selectedInterests = interestsViewModel.getSelectedCategoriesWithSubinterests().getValue();
             if (selectedInterests != null && selectedInterests.size() < 3) {
                 Toast.makeText(InterestSelectorActivity.this, "Musisz wybrać minimum 3 zainteresowania", Toast.LENGTH_SHORT).show();
             } else {
@@ -105,10 +91,19 @@ public class InterestSelectorActivity extends AppCompatActivity {
         });
     }
 
-    public void handleActivity () {
-        if (getIntent() != null)
+    private void handleActivity() {
+        if ("update".equals(mode))
             finish();
-        else
-            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        else if ("missing".equals(mode))
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        else {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
+        }
     }
+
+    public InterestsViewModel getInterestsViewModel() {
+        return interestsViewModel;
+    }
+
 }

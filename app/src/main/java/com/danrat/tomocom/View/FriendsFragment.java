@@ -17,11 +17,8 @@ import android.widget.TextView;
 import com.danrat.tomocom.Adapter.FriendListAdapter;
 import com.danrat.tomocom.R;
 import com.danrat.tomocom.ViewModel.ChatRoomsViewModel;
-import com.danrat.tomocom.Model.Message;
 
 import com.danrat.tomocom.ViewModel.UserListViewModel;
-
-import java.util.List;
 
 public class FriendsFragment extends Fragment implements FriendListAdapter.OnMenuItemClickListener {
 
@@ -40,6 +37,7 @@ public class FriendsFragment extends Fragment implements FriendListAdapter.OnMen
         emptyRecyclerTextView = view.findViewById(R.id.emptyRecyclerTV);
         friendsIconImageView = view.findViewById(R.id.friendsIconIV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemViewCacheSize(20);
 
         UserListViewModel userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
         chatRoomsViewModel = new ViewModelProvider(requireActivity()).get(ChatRoomsViewModel.class);
@@ -53,34 +51,36 @@ public class FriendsFragment extends Fragment implements FriendListAdapter.OnMen
 
         chatRoomsViewModel.getChatRooms().observe(getViewLifecycleOwner(), chats -> {
             if (chats != null) {
-
                 if (adapter == null) {
                     adapter = new FriendListAdapter(
                             chats,
                             chatRoomsViewModel.getUsernames(),
                             chatRoomsViewModel.getUidList(),
+                            chatRoomsViewModel.getDescriptions(),
                             chatRoomsViewModel.getProfilePicturesUrls(),
+                            chatRoomsViewModel.getUserID(),
                             this
                     );
 
                     recyclerView.setAdapter(adapter);
-                    adapter.setOnItemClickListener(new FriendListAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(List<Message> messages, String username, String uid, String cid, String profilePictureUrl) {
-                            Intent intent = new Intent(getContext(), ChatActivity.class);
-                            intent.putExtra("username", username);
-                            intent.putExtra("uid", uid);
-                            intent.putExtra("cid", cid);
-                            intent.putExtra("profilePictureUrl", profilePictureUrl);
-                            startActivity(intent);
-                        }
+                    adapter.setOnItemClickListener((username, uid, cid, description, profilePictureUrl) -> {
+                        Intent intent = new Intent(getContext(), ChatActivity.class);
+                        intent.putExtra("username", username);
+                        intent.putExtra("uid", uid);
+                        intent.putExtra("cid", cid);
+                        intent.putExtra("profilePictureUrl", profilePictureUrl);
+                        intent.putExtra("description", description);
+                        startActivity(intent);
                     });
                 } else {
                     adapter.updateData(
                             chats,
                             chatRoomsViewModel.getUsernames(),
                             chatRoomsViewModel.getUidList(),
-                            chatRoomsViewModel.getProfilePicturesUrls()
+                            chatRoomsViewModel.getDescriptions(),
+                            chatRoomsViewModel.getProfilePicturesUrls(),
+                            chatRoomsViewModel.getUserID(),
+                            this
                     );
                 }
             }

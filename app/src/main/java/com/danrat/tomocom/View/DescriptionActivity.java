@@ -14,6 +14,7 @@ import com.danrat.tomocom.ViewModel.DescriptionViewModel;
 public class DescriptionActivity extends AppCompatActivity {
 
     DescriptionViewModel descriptionViewModel;
+    String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,11 @@ public class DescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_description);
 
         descriptionViewModel = new ViewModelProvider(this).get(DescriptionViewModel.class);
+        mode = getIntent().getStringExtra("mode");
         Button nextButton = findViewById(R.id.nextButton);
+        if (mode != null)
+            nextButton.setText(R.string.button_save);
+
         EditText descriptionEditText = findViewById(R.id.descriptionET);
 
         nextButton.setOnClickListener(v -> {
@@ -31,10 +36,12 @@ public class DescriptionActivity extends AppCompatActivity {
         });
     }
 
-    public void handleActivity () {
-        if (getIntent() != null)
+    private void handleActivity() {
+        if ("update".equals(mode))
             finish();
-        else
+        else {
             startActivity(new Intent(getApplicationContext(), InterestSelectorActivity.class));
+            finish();
+        }
     }
 }

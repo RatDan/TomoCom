@@ -45,12 +45,8 @@ public class DeleteAccountViewModel extends ViewModel {
         AuthCredential credential = EmailAuthProvider.getCredential(Objects.requireNonNull(user.getEmail()), password);
 
         user.reauthenticate(credential)
-                .addOnSuccessListener(aVoid -> {
-                    deleteAccount(user);
-                })
-                .addOnFailureListener(e -> {
-                    reauthErrorMessage.setValue("Błąd ponownej autoryzacji: niepoprawne hasło.");
-                });
+                .addOnSuccessListener(aVoid -> deleteAccount(user))
+                .addOnFailureListener(e -> reauthErrorMessage.setValue("Błąd ponownej autoryzacji: niepoprawne hasło."));
 
     }
 
@@ -59,24 +55,14 @@ public class DeleteAccountViewModel extends ViewModel {
         StorageReference fileRef = storage.getReference().child("profile_images/" + userID);
 
         documentReference.delete()
-                .addOnSuccessListener(unused -> {
-                    fileRef.delete()
-                        .addOnSuccessListener(unused1 -> {
-                            user.delete()
-                                .addOnSuccessListener(aVoid -> {
-                                    FirebaseAuth.getInstance().signOut();
-                                    deleteSuccess.setValue(true);
-                                })
-                                .addOnFailureListener(e -> {
-                                    deleteSuccess.setValue(false);
-                                });
+                .addOnSuccessListener(unused -> fileRef.delete()
+                    .addOnSuccessListener(unused1 -> user.delete()
+                        .addOnSuccessListener(aVoid -> {
+                            FirebaseAuth.getInstance().signOut();
+                            deleteSuccess.setValue(true);
                         })
-                        .addOnFailureListener(e -> {
-                            deleteSuccess.setValue(false);
-                        });
-                })
-                .addOnFailureListener(e -> {
-                    deleteSuccess.setValue(false);
-                });
+                        .addOnFailureListener(e -> deleteSuccess.setValue(false)))
+                    .addOnFailureListener(e -> deleteSuccess.setValue(false)))
+                .addOnFailureListener(e -> deleteSuccess.setValue(false));
     }
 }

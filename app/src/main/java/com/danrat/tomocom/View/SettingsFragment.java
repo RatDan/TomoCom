@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -63,14 +62,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         Preference logOutPreference = findPreference("logout");
         if (logOutPreference != null) {
-            logOutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(@NonNull Preference preference) {
-                    logOutViewModel.logOut();
-                    startActivity(new Intent(getActivity(),MainActivity.class));
-                    Toast.makeText(getActivity(), "Wylogowano pomyślnie!",Toast.LENGTH_SHORT).show();
-                    return true;
-                }
+            logOutPreference.setOnPreferenceClickListener(preference -> {
+                logOutViewModel.logOut();
+                startActivity(new Intent(getActivity(),MainActivity.class));
+                requireActivity().finish();
+                Toast.makeText(getActivity(), "Wylogowano pomyślnie!",Toast.LENGTH_SHORT).show();
+                return true;
             });
             Drawable icon = logOutPreference.getIcon();
             if (icon != null) {
@@ -80,12 +77,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         Preference aboutPreference = findPreference("about");
         if (aboutPreference != null) {
-            aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(@NonNull Preference preference) {
-                    startActivity(new Intent(getActivity(),AboutUsActivity.class));
-                    return true;
-                }
+            aboutPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(),AboutUsActivity.class));
+                return true;
             });
             Drawable icon = aboutPreference.getIcon();
             if (icon != null) {
@@ -100,25 +94,22 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 editText.getText().clear();
             });
 
-            agePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                    String ageString = (String) newValue;
-                    try {
-                        int age = Integer.parseInt(ageString);
-                        if (age < 13 || age > 120) {
-                            agePreference.setText(String.valueOf(Integer.parseInt("13")));
-                            agePreference.setSummaryProvider(preference1 -> "13");
-                            Toast.makeText(getContext(), "Wiek musi być większy od 13 i mniejszy od 120", Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-                    } catch (NumberFormatException e) {
+            agePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                String ageString = (String) newValue;
+                try {
+                    int age = Integer.parseInt(ageString);
+                    if (age < 13 || age > 120) {
                         agePreference.setText(String.valueOf(Integer.parseInt("13")));
-                        Toast.makeText(getContext(), "Podaj poprawny numer", Toast.LENGTH_SHORT).show();
+                        agePreference.setSummaryProvider(preference1 -> "13");
+                        Toast.makeText(getContext(), "Wiek musi być większy od 13 i mniejszy od 120", Toast.LENGTH_SHORT).show();
                         return false;
                     }
-                    return true;
+                } catch (NumberFormatException e) {
+                    agePreference.setText(String.valueOf(Integer.parseInt("13")));
+                    Toast.makeText(getContext(), "Podaj poprawny numer", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
+                return true;
             });
             Drawable icon = agePreference.getIcon();
             if (icon != null) {

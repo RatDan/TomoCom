@@ -2,7 +2,6 @@ package com.danrat.tomocom.ViewModel;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;

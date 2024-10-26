@@ -53,28 +53,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
-                loginViewModel.logIn(email, password);
-            }
+        loginButton.setOnClickListener(v -> {
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            loginViewModel.logIn(email, password);
         });
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent (LoginActivity.this, SignupActivity.class));
-            }
-        });
+        signUpButton.setOnClickListener(v -> startActivity(new Intent (LoginActivity.this, SignupActivity.class)));
 
-        remindPasswordTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-            }
-        });
+        remindPasswordTextView.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class)));
     }
 
     @Override

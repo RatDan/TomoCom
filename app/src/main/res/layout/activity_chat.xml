@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/topRV"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIV"
@@ -25,11 +25,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/profileIV"
             android:text="@string/placeholder_username"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/descriptionTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/profileIV"
+            android:text="@string/placeholder_description"
+            android:singleLine="true"
+            android:layout_below="@id/usernameTV"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 

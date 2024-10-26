@@ -43,6 +43,7 @@ public class FindFragment extends Fragment implements SharedPreferences.OnShared
         emptyRecyclerTextView = view.findViewById(R.id.emptyRecyclerTV);
         searchIconImageView = view.findViewById(R.id.searchIconIV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemViewCacheSize(20);
 
         userListViewModel = new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
 
@@ -65,7 +66,7 @@ public class FindFragment extends Fragment implements SharedPreferences.OnShared
 
                     @Override
                     public void onSkipClick(User user, int position) {
-                        userListViewModel.skipUser(user.getUid(), user.getUid());
+                        userListViewModel.skipUser(user.getUid(), user.getUsername());
                     }
                 });
             } else {

@@ -1,11 +1,10 @@
 package com.danrat.tomocom.Model;
 
-import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class User {
     private String uid="";
@@ -14,7 +13,8 @@ public class User {
     private String description="";
     private String profileImageUrl;
 
-    private final List<Interests> interests = Collections.emptyList();
+    private List<String> interests = Collections.emptyList();
+    private List<String> subinterests = Collections.emptyList();
     private List<String> friends = Collections.emptyList();
     private List<String> skipped = Collections.emptyList();
 
@@ -38,7 +38,11 @@ public class User {
     }
     public void setSkipped (List<String> skipped) { this.skipped = skipped; }
     public void setFriends (List<String> friends) { this.friends = friends; }
-    public void setDescription (String description) { this.description=description; }
+    public void setDescription (String description) { this.description = description; }
+    public void setInterests (List<String> interests) { this.interests = interests; }
+    public void setSubInterests (List<String> subinterests) { this.subinterests = subinterests; }
+    public void setAge (int age) { this.age = age; }
+    public void setUsername (String username) { this.username = username; }
     public void setProfileImageUrl (String profileImageUrl) { this.profileImageUrl = profileImageUrl; }
 
     public String getUid() { return uid; }
@@ -47,7 +51,8 @@ public class User {
         return age;
     }
     public String getDescription() { return  description; }
-    public List<Interests> getInterests () { return interests; }
+    public List<String> getInterests () { return interests; }
+    public List<String> getSubInterests () { return subinterests; }
     public List<String> getSkipped () { return skipped; }
     public List<String> getFriends () { return friends; }
     public String getProfileImageUrl () { return profileImageUrl; }
@@ -55,10 +60,19 @@ public class User {
     @Exclude
     public String getInterestsString() {
         StringBuilder temp = new StringBuilder();
-        for (Interests interest : interests) {
-            temp.append(interest.toString()).append(", ");
+        Iterator<String> iIterator = interests.iterator();
+        Iterator<String> sIterator = subinterests.iterator();
+
+        while (iIterator.hasNext() && sIterator.hasNext())
+        {
+            String interest = iIterator.next();
+            String subInterest = sIterator.next();
+            temp.append(" \n").append(interest).append(": ").append(subInterest).append(", ");
         }
-        temp.deleteCharAt(temp.length()-2);
+
+        if (temp.length() != 0)
+            temp.deleteCharAt(temp.length()-2);
+
         return temp.toString();
     }
 

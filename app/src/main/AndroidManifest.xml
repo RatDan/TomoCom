@@ -46,18 +46,21 @@
         <activity
             android:name=".View.LoginActivity"
             android:exported="false"
-            android:screenOrientation="sensorPortrait" />
+            android:screenOrientation="sensorPortrait"
+            android:noHistory="true"/>
         <activity
             android:name=".View.SignupActivity"
             android:exported="false"
-            android:screenOrientation="sensorPortrait" />
+            android:screenOrientation="sensorPortrait"
+            android:noHistory="true"/>
         <activity
             android:name=".View.MainActivity"
             android:exported="true"
+            android:theme="@style/SplashTheme"
+            android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

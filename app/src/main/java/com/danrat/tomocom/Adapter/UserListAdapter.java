@@ -1,8 +1,6 @@
 package com.danrat.tomocom.Adapter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import com.danrat.tomocom.Model.User;
 import com.danrat.tomocom.R;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
@@ -48,7 +45,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_user, parent, false);
-        return new ViewHolder(view, listener);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -58,36 +55,27 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         int matchLevel = matchLevelList.get(position);
         String profilePictureUrl = profilePicturesList.get(position);
         if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
-            Picasso.get().load(profilePictureUrl).placeholder(R.drawable.nav_profile).into(holder.profileImageView);
+            Picasso.get().load(profilePictureUrl).placeholder(R.drawable.nav_profile).noFade().into(holder.profileImageView);
         } else {
             holder.profileImageView.setImageResource(R.drawable.nav_profile);
         }
-        holder.bind(user, matchLevel, profilePictureUrl);
+        holder.bind(user, matchLevel);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onItemClick(user);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(user);
             }
         });
 
-        holder.buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onAddClick(user, holder.getAdapterPosition());
-                }
+        holder.buttonAdd.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onAddClick(user, holder.getAdapterPosition());
             }
         });
 
-        holder.buttonSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onSkipClick(user, holder.getAdapterPosition());
-                }
+        holder.buttonSkip.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onSkipClick(user, holder.getAdapterPosition());
             }
         });
     }
@@ -121,7 +109,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         private final ImageButton buttonSkip;
         private final ImageView profileImageView;
 
-        public ViewHolder(final View itemView, final OnItemClickListener listener) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.TV1);
             textViewAge = itemView.findViewById(R.id.TV2);
@@ -141,11 +129,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             progressBar.setProgress(0);
         }
 
-        public void bind(User user, int matchLevel, String profilePictureUrl) {
+        public void bind(User user, int matchLevel) {
             textViewName.setText(user.getUsername());
-            textViewAge.append(" " + String.valueOf(user.getAge()));
+            textViewAge.append(" " + (user.getAge()));
             textViewInterests.append(" " + user.getInterestsString());
-            textViewMatchLevel.append(" " + String.valueOf(matchLevel) + "%");
+            textViewMatchLevel.append(" " + (matchLevel) + "%");
             progressBar.setProgress(matchLevel);
         }
     }

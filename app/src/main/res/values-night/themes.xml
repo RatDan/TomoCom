@@ -1,8 +1,37 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Dark.Theme.TomoComm" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple_mode</item>
         <item name="colorAccent">@color/light_purple_mode</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/light_purple_mode</item>
+    </style>
+
+    <style name="CustomCardViewStyleRight" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners_right</item>
+    </style>
+
+    <style name="CustomCardViewStyleLeft" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners_left</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners_right" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">12dp</item>
+        <item name="cornerSizeTopLeft">12dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">12dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners_left" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">12dp</item>
+        <item name="cornerSizeTopLeft">12dp</item>
+        <item name="cornerSizeBottomRight">12dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
 </resources>

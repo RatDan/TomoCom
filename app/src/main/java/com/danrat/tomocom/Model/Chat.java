@@ -1,8 +1,5 @@
 package com.danrat.tomocom.Model;
 
-import com.google.firebase.firestore.DocumentId;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

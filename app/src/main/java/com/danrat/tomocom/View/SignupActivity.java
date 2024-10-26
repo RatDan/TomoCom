@@ -51,8 +51,9 @@ public class SignupActivity extends AppCompatActivity {
         signUpViewModel.isAccountCreated().observe(this, isCreated -> {
             if (isCreated) {
                 Toast.makeText(SignupActivity.this, "Utworzono konto", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), ProfilePictureActivity.class));
-                finish();
+                Intent intent = new Intent(this, ProfilePictureActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(new Intent(getApplicationContext(),ProfilePictureActivity.class));
             }
         });
 

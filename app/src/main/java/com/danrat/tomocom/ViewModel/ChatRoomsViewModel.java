@@ -2,18 +2,13 @@ package com.danrat.tomocom.ViewModel;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.danrat.tomocom.Model.Chat;
-import com.danrat.tomocom.Model.Message;
 import com.danrat.tomocom.Model.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -29,6 +24,7 @@ public class ChatRoomsViewModel extends ViewModel {
     private final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private final MutableLiveData<List<Chat>> chatDataList = new MutableLiveData<>();
     private final List<String> usernames = new ArrayList<>();
+    private final List<String> descriptions = new ArrayList<>();
     private final List<String> uidList = new ArrayList<>();
     private final List<String> profilePicturesUrls = new ArrayList<>();
     private final List<Date> dateList = new ArrayList<>();
@@ -44,6 +40,8 @@ public class ChatRoomsViewModel extends ViewModel {
     public List<String> getUsernames() { return usernames; }
     public List<String> getUidList() { return uidList; }
     public List<String> getProfilePicturesUrls() { return profilePicturesUrls; }
+    public List<String> getDescriptions() { return descriptions; }
+    public String getUserID() { return userID; }
 
     public void fetchChatData(List<String> friends, List<User> users) {
         if (friends.isEmpty())
@@ -60,10 +58,12 @@ public class ChatRoomsViewModel extends ViewModel {
                             List<Chat> chatRooms = new ArrayList<>();
                             for (DocumentSnapshot document : snapshot.getDocuments()) {
                                 Chat chat = document.toObject(Chat.class);
-                                chatRooms.add(chat);
+                                if (chat != null && chat.getMembers().contains(userID))
+                                    chatRooms.add(chat);
                             }
 
                             usernames.clear();
+                            descriptions.clear();
                             profilePicturesUrls.clear();
                             uidList.clear();
                             dateList.clear();
@@ -75,6 +75,7 @@ public class ChatRoomsViewModel extends ViewModel {
                                     for (User user : users) {
                                         if (Objects.equals(user.getUid(), tempMembers.get(0))) {
                                             usernames.add(user.getUsername());
+                                            descriptions.add(user.getDescription());
                                             profilePicturesUrls.add(user.getProfileImageUrl());
                                             uidList.add(tempMembers.get(0));
                                             if (chat.getMessages().isEmpty()) {
@@ -87,7 +88,7 @@ public class ChatRoomsViewModel extends ViewModel {
                                     }
                                 }
                             }
-                            sortChatsByDate(chatRooms, dateList, usernames, uidList, profilePicturesUrls);
+                            sortChatsByDate(chatRooms, dateList, usernames, uidList, descriptions, profilePicturesUrls);
 
                             chatDataList.setValue(chatRooms);
 
@@ -112,7 +113,7 @@ public class ChatRoomsViewModel extends ViewModel {
         }
     }
 
-    private void sortChatsByDate(List<Chat> chats, List<Date> dates, List<String> usernames, List<String> uidList, List<String> profilePicturesUrls) {
+    private void sortChatsByDate(List<Chat> chats, List<Date> dates, List<String> usernames, List<String> uidList, List<String> descriptions, List<String> profilePicturesUrls) {
         List<Integer> indices = new ArrayList<>();
         for (int i = 0; i < dates.size(); i++) {
             indices.add(i);
@@ -125,6 +126,7 @@ public class ChatRoomsViewModel extends ViewModel {
         List<String> sortedUsernames = new ArrayList<>();
         List<String> sortedUidList = new ArrayList<>();
         List<String> sortedProfilePicturesUrls = new ArrayList<>();
+        List<String> sortedDescriptions = new ArrayList<>();
 
         for (int index : indices) {
             sortedChats.add(chats.get(index));
@@ -132,6 +134,7 @@ public class ChatRoomsViewModel extends ViewModel {
             sortedUsernames.add(usernames.get(index));
             sortedUidList.add(uidList.get(index));
             sortedProfilePicturesUrls.add(profilePicturesUrls.get(index));
+            sortedDescriptions.add(descriptions.get(index));
         }
 
         chats.clear();
@@ -148,61 +151,38 @@ public class ChatRoomsViewModel extends ViewModel {
 
         profilePicturesUrls.clear();
         profilePicturesUrls.addAll(sortedProfilePicturesUrls);
+
+        descriptions.clear();
+        descriptions.addAll(sortedDescriptions);
     }
 
     public void removeFriend(String uid, String cid) {
         DocumentReference docRef = firestore.collection("users").document(userID);
 
         docRef.update("friends", FieldValue.arrayRemove(uid))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "User " + uid + "removed from friends.");
-                        removeChat(cid);
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "User " + uid + "removed from friends.");
+                    removeChat(cid);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error on removing friend: ", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.w("Firestore", "Error on removing friend: ", e));
     }
 
     public void removeAndBlockFriend(String uid, String cid) {
         DocumentReference docRef = firestore.collection("users").document(userID);
         removeFriend(uid, cid);
         docRef.update("skipped", FieldValue.arrayUnion(uid))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "User " + uid + "added to blocked.");
-                        removeChat(cid);
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "User " + uid + "added to blocked.");
+                    removeChat(cid);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error adding to blocked: ", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.w("Firestore", "Error adding to blocked: ", e));
     }
 
     public void removeChat (String cid) {
         DocumentReference docRef = firestore.collection("chat_rooms").document(cid);
         docRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "Chat room" + cid + " removed.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error removing chat room: ", e);
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Chat room" + cid + " removed."))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error removing chat room: ", e));
     }
 
 }

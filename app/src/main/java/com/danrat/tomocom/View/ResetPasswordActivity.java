@@ -49,19 +49,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
            }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
-            }
-        });
+        loginButton.setOnClickListener(v -> startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class)));
 
-        resetPasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailEditText.getText().toString().trim();
-                resetPasswordViewModel.resetPassword(email);
-            }
+        resetPasswordButton.setOnClickListener(v -> {
+            String email = emailEditText.getText().toString().trim();
+            resetPasswordViewModel.resetPassword(email);
         });
     }
 }

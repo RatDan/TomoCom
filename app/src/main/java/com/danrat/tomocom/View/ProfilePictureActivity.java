@@ -3,8 +3,10 @@ package com.danrat.tomocom.View;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,6 +24,8 @@ public class ProfilePictureActivity extends AppCompatActivity {
     private ImageView profileImageView;
     private Uri imageUri;
     private ProfilePictureViewModel profilePictureViewModel;
+    private ProgressBar progressBar;
+    String mode;
 
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -36,15 +40,27 @@ public class ProfilePictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_picture);
 
+        mode = getIntent().getStringExtra("mode");
         profileImageView = findViewById(R.id.profileImageView);
+        progressBar = findViewById(R.id.profilePictureProgressBar);
         Button selectImageButton = findViewById(R.id.selectImageButton);
         Button nextButton = findViewById(R.id.nextButton);
+        if (mode != null)
+            nextButton.setText(R.string.button_save);
 
         profilePictureViewModel = new ViewModelProvider(this).get(ProfilePictureViewModel.class);
 
         profilePictureViewModel.getProfileImageUri().observe(this, uri -> {
             if (uri != null) {
                 loadImage(uri.toString());
+            }
+        });
+
+        profilePictureViewModel.isLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -88,9 +104,13 @@ public class ProfilePictureActivity extends AppCompatActivity {
     }
 
     private void handleActivity() {
-        if (getIntent() != null)
+        if ("update".equals(mode))
             finish();
-        else
+        else if ("missing".equals(mode))
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        else {
             startActivity(new Intent(getApplicationContext(), DescriptionActivity.class));
+            finish();
+        }
     }
 }

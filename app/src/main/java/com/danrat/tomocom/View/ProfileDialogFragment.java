@@ -56,6 +56,7 @@ public class ProfileDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,6 @@ public class ProfileDialogFragment extends DialogFragment {
            uid = getArguments().getString(uidArg);
            friends = (List<String>) getArguments().getSerializable(friendsArg);
         }
-        //setStyle(DialogFragment.STYLE_NO_TITLE, R.style.ProfileDialogFragmentStyle);
     }
 
     @Override
@@ -84,26 +84,20 @@ public class ProfileDialogFragment extends DialogFragment {
         Button addButton = view.findViewById(R.id.addFriendButton);
         Button skipButton = view.findViewById(R.id.skipButton);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userListViewModel.addUserToFriends(new User(uid, friends), uid, userName);
-                dismiss();
-            }
+        addButton.setOnClickListener(v -> {
+            userListViewModel.addUserToFriends(new User(uid, friends), uid, userName);
+            dismiss();
         });
 
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userListViewModel.skipUser(uid,userName);
-                dismiss();
-            }
+        skipButton.setOnClickListener(v -> {
+            userListViewModel.skipUser(uid,userName);
+            dismiss();
         });
 
 
         userNameTextView.setText(userName);
-        ageTextView.append(" " + String.valueOf(age));
-        interestsTextView.append(" " + String.valueOf(interests));
+        ageTextView.append(" " + (age));
+        interestsTextView.append(" " + (interests));
         descriptionTextView.setText(description);
 
         if (profileImageUrl != null) {
