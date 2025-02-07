@@ -1,10 +1,10 @@
 
 
-#**Wymagany plik google-services.json**
+# **Wymagany plik google-services.json**
 
 Aplikacja Android wymaga pliku google-services.json, aby poprawnie działać. Plik ten jest niezbędny do korzystania z usług Firebase, takich jak autoryzacja, analityka czy powiadomienia push.
 
-#**Instrukcja dodania pliku:**
+# **Instrukcja dodania pliku:**
 
 Pobierz plik google-services.json z konsoli Firebase.
 
@@ -21,7 +21,7 @@ Upewnij się, że plik nie jest dodany do systemu kontroli wersji (np. .gitignor
 
 Uruchom ponownie projekt i skompiluj aplikację.
 
-#**Ważne**
+# **Ważne**
 
 Bez pliku google-services.json aplikacja nie uruchomi się poprawnie lub może generować błędy związane z Firebase.
 
