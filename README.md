@@ -8,14 +8,7 @@ Aplikacja Android wymaga pliku google-services.json, aby poprawnie działać. Pl
 
 Pobierz plik google-services.json z konsoli Firebase.
 
-Umieść go w katalogu app projektu Android:
-
-/projekt-android/
-├── app/
-│   ├── google-services.json  <-- TUTAJ
-│   ├── src/
-│   ├── build.gradle
-│   ├── ...
+Umieść go w katalogu app projektu Android.
 
 Upewnij się, że plik nie jest dodany do systemu kontroli wersji (np. .gitignore).
 
