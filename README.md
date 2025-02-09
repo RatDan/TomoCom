@@ -1,20 +1,18 @@
+# **Google-services.json file required**
 
+TomoCom requires a google-services.json file to function properly. This file is required to use Firebase services such as authorization and database.
 
-# **Wymagany plik google-services.json**
+# **Instructions for adding the file:**
 
-Aplikacja Android wymaga pliku google-services.json, aby poprawnie działać. Plik ten jest niezbędny do korzystania z usług Firebase, takich jak autoryzacja, analityka czy powiadomienia push.
+Download the google-services.json file from the Firebase console.
 
-# **Instrukcja dodania pliku:**
+Place it in the app directory of your Android project.
 
-Pobierz plik google-services.json z konsoli Firebase.
+Make sure the file is not added to your version control system (e.g. .gitignore).
 
-Umieść go w katalogu app projektu Android.
+Restart the project and build the app.
 
-Upewnij się, że plik nie jest dodany do systemu kontroli wersji (np. .gitignore).
+# **Important**
 
-Uruchom ponownie projekt i skompiluj aplikację.
-
-# **Ważne**
-
-Bez pliku google-services.json aplikacja nie uruchomi się poprawnie lub może generować błędy związane z Firebase.
+Without the google-services.json file, the app will not start properly or may generate errors related to Firebase.
 
